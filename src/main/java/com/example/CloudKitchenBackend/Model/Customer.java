@@ -11,11 +11,18 @@ import java.util.Set;
 @Entity
 @Table(name = "customer")
 public class Customer {
+    @SequenceGenerator(
+            name = "customer_id_sequence",
+            sequenceName = "customer_sequence",
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "id",length = 100)
-    private String id;
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator="customer_sequence"
+    )
+    @Column(name = "customer_id",length = 10)
+    private int id;
     @Column(name = "first_name",nullable = false)
     private String firstName;
     @Column(name = "last_name",nullable = false)

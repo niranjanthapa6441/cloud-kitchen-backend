@@ -6,8 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
-@Table
-public class CompanyAddress {
+@Table(name = "restaurant_address")
+public class RestaurantAddress {
     @Id
     @GenericGenerator(strategy = "uuid",name = "system-uuid")
     @GeneratedValue(generator = "system-uuid")

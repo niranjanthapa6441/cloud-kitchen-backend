@@ -2,15 +2,17 @@ package com.example.CloudKitchenBackend.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
 @Table(name = "menu_food")
 public class MenuFood {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "menu_food-id")
-    private int id;
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(strategy = "uuid",name="system-uuid")
+    @Column(name = "menu_food_id")
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "menu_id")

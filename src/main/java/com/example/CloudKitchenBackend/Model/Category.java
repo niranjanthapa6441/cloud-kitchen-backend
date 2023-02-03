@@ -8,11 +8,18 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="category")
 public class Category {
+    @SequenceGenerator(
+            name = "category_id_seq",
+            sequenceName = "category_sequence",
+            allocationSize = 1
+    )
     @Id
-    @GenericGenerator(name = "system-uuid",strategy = "uuid")
-    @GeneratedValue(generator = "system-uuid")
-    @Column(name="category_id",length = 20)
-    private String id;
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator="category_sequence"
+    )
+    @Column(name="category_id",length=10)
+    private int id;
 
 
     @Column(name = "category", nullable = false, length = 20)

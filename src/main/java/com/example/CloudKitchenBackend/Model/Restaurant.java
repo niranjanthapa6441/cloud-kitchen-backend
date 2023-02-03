@@ -30,6 +30,6 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name = "address_id")
-    private CompanyAddress CompanyAddress;
+    private RestaurantAddress CompanyAddress;
     private String Status;
 }

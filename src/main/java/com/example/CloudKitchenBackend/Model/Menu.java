@@ -1,17 +1,28 @@
 package com.example.CloudKitchenBackend.Model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
-
+@Data
+@Entity
+@Table(name = "menu")
 public class Menu {
+    @SequenceGenerator(
+            name = "menu_id_seq",
+            sequenceName = "menu_sequence",
+            allocationSize = 1
+    )
     @Id
-    @GenericGenerator(name = "system-uuid",strategy = "uuid")
-    @GeneratedValue(generator = "system-uuid")
-    private String id;
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator="menu_sequence"
+    )
+    @Column(name = "menu_id")
+    private int id;
     @OneToOne
-    @JoinColumn(name = "restaurant_d")
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     @Column(name = "description",nullable = false)

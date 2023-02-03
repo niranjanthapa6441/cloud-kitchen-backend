@@ -9,8 +9,16 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "food")
 public class Food {
 
+    @SequenceGenerator(
+            name = "food_id_sequence",
+            sequenceName = "food_sequence",
+            allocationSize = 1
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator="food_sequence"
+    )
     @Column(name = "food_id")
     private int id;
 
