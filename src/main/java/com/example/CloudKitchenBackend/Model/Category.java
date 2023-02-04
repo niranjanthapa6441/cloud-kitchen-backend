@@ -22,7 +22,7 @@ public class Category {
     private int id;
 
 
-    @Column(name = "category", nullable = false, length = 20)
+    @Column(name = "category", nullable = false, length = 20,unique = true)
     private String category;
 
     @Column(name = "description", nullable = false)
