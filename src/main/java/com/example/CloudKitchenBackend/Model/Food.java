@@ -26,6 +26,6 @@ public class Food {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name",unique = true, nullable = false)
     private String name;
 }

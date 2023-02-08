@@ -1,6 +1,5 @@
 package com.example.CloudKitchenBackend.Controller;
 
-import com.example.CloudKitchenBackend.Request.CategoryRequest;
 import com.example.CloudKitchenBackend.Request.UserSignUpRequest;
 import com.example.CloudKitchenBackend.Request.UserUpdateRequest;
 import com.example.CloudKitchenBackend.Service.UserService;
@@ -35,8 +34,8 @@ public class UserController {
     public ResponseEntity<Object> delete(@RequestParam int id){
         return RestResponse.ok(service.delete(id),"Category deleted Successful");
     }
-    @PostMapping(value = "/update",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> update(@RequestParam int id,@Valid @RequestBody UserUpdateRequest request){
+    @PostMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> update(@PathVariable int id,@Valid @RequestBody UserUpdateRequest request){
         return RestResponse.ok(service.update(request, id),"Category updated Successful");
     }
 }

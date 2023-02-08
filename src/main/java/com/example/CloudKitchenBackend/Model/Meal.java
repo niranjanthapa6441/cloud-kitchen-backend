@@ -21,6 +21,6 @@ public class Meal {
     @Column(name = "meal_id")
     private int id;
 
-    @Column(name = "meal", nullable = false)
+    @Column(name = "meal",unique = true, nullable = false)
     private String meal;
 }

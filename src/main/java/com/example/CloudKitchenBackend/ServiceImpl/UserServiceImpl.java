@@ -8,6 +8,7 @@ import com.example.CloudKitchenBackend.Repositories.UserRepo;
 import com.example.CloudKitchenBackend.Request.UserSignUpRequest;
 import com.example.CloudKitchenBackend.Request.UserUpdateRequest;
 import com.example.CloudKitchenBackend.Service.UserService;
+import com.example.CloudKitchenBackend.Util.CustomException;
 import com.example.CloudKitchenBackend.Util.DateTimeFormatter;
 import com.example.CloudKitchenBackend.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,7 @@ public class UserServiceImpl implements UserService {
     public String update(UserUpdateRequest request, int id) {
         return null;
     }
-    private void checkValidation(UserSignUpRequest request) {
 
-    }
     private User toUser(UserSignUpRequest request) {
         User user= new User();
         DateTimeFormatter dateTimeFormatter= new DateTimeFormatter();
@@ -92,5 +91,28 @@ public class UserServiceImpl implements UserService {
                 role(user.getRole().getName()).
                 username(user.getUsername())
                 .build();
+    }
+    private void checkValidation(UserSignUpRequest request) {
+        checkEmail(request.getEmail());
+        checkUsername(request.getUsername());
+        checkPhonenumber(request.getPhoneNumber());
+    }
+
+    private void checkPhonenumber(String phoneNumber) {
+        if(repo.findUserByPhoneNumber(phoneNumber).isPresent()){
+            throw new CustomException(CustomException.Type.PHONE_NUMBER_ALREADY_EXISTS);
+        }
+    }
+
+    private void checkUsername(String username) {
+        if(repo.findUserByUsername(username).isPresent()){
+            throw new CustomException(CustomException.Type.USERNAME_ALREADY_EXIST);
+        }
+    }
+
+    private void checkEmail(String email) {
+        if(repo.findUserByEmail(email).isPresent()){
+            throw new CustomException(CustomException.Type.EMAIL_ALREADY_EXITS);
+        }
     }
 }

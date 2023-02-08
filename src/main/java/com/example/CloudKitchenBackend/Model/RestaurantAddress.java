@@ -14,13 +14,17 @@ public class RestaurantAddress {
     @Column(name = "address_id")
     private String id;
 
+    @Column(name = "country", unique = true,nullable = false)
     private String country;
 
+
+    @Column(name = "country", nullable = false)
     private String state;
 
+    @Column(name = "district",nullable = false)
     private String district;
-
+    @Column(name = "street_name",nullable = false)
     private String streetName;
-
+    @Column(name = "street_number",nullable = false)
     private String streetNumber;
 }

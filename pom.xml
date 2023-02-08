@@ -23,10 +23,6 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jdbc</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20180130</version>
@@ -123,7 +119,6 @@
 			<artifactId>jakarta.mail</artifactId>
 			<version>1.6.7</version>
 		</dependency>
-
     </dependencies>
 
 	<build>
@@ -170,5 +165,4 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-
 </project>

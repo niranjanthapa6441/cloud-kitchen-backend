@@ -36,8 +36,8 @@ public class CategoryController {
     public ResponseEntity<Object> delete(@RequestParam int id){
         return RestResponse.ok(service.delete(id),"Category deleted Successful");
     }
-    @PostMapping(value ="/update",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> update(@RequestParam int id, @RequestBody CategoryRequest request){
+    @PostMapping(value ="/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> update(@PathVariable int id, @RequestBody CategoryRequest request){
         return RestResponse.ok(service.update(request, id),"Category updated Successful");
     }
 }
