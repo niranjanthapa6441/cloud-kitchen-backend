@@ -18,8 +18,8 @@ public class Order {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User customer;
     @Column(nullable = false, name = "order_date")
     private LocalDate orderDate;
 

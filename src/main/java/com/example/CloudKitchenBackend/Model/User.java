@@ -2,18 +2,17 @@ package com.example.CloudKitchenBackend.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "customer")
-public class Customer {
+@Table(name = "app_user")
+public class User {
     @SequenceGenerator(
-            name = "customer_id_sequence",
-            sequenceName = "customer_sequence",
+            name = "user_id_sequence",
+            sequenceName = "user_sequence",
             allocationSize = 1
     )
     @Id
@@ -21,7 +20,7 @@ public class Customer {
             strategy = GenerationType.IDENTITY,
             generator="customer_sequence"
     )
-    @Column(name = "customer_id",length = 10)
+    @Column(name = "user_id",length = 10)
     private int id;
     @Column(name = "first_name",nullable = false)
     private String firstName;
@@ -37,6 +36,9 @@ public class Customer {
     private String phoneNumber;
     @Column(name = "password",nullable = false)
     private String password;
+
+    @Column(name = "date_of_birth", nullable = false)
+    private LocalDate dateOfBirth;
     @Column(name = "status",nullable = false)
     private String status;
     private Boolean locked=false;

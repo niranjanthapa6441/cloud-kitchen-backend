@@ -17,8 +17,8 @@ public class FoodFeedback {
     @Column(nullable = false)
     private double rating;
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User customer;
     @ManyToOne
     @JoinColumn(name = "order_menu_food_id")
     private OrderMenuFood orderMenuFood;
