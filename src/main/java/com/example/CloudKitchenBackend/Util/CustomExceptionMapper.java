@@ -28,9 +28,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 @Slf4j
 @ControllerAdvice
-public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
-//    private static final String internalServerErrorMsg = "Something went wrong. Please try again later";
-
+public class CustomExceptionMapper extends ResponseEntityExceptionHandler implements CustomExceptionMapperInterface {
+//private static final String internalServerErrorMsg = "Something went wrong. Please try again later";
+//
+    @Override
     @ExceptionHandler(CustomException.class)
     public final ResponseEntity<Object> restExceptionHandler(CustomException restException) {
         log.error("Exception handling:: " + restException.getMessage());
@@ -38,6 +39,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @Override
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> restExceptionHandler(Exception ex) {
         log.error("Exception handling:: " + ex.fillInStackTrace());
@@ -47,10 +49,10 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException
-                                                                          methodArgumentNotValidException,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException
+                                                                       methodArgumentNotValidException,
+                                                               HttpHeaders headers,
+                                                               HttpStatus status, WebRequest request) {
         HashMap<String, String> beanValidation = new HashMap<>();
         methodArgumentNotValidException.getBindingResult().getAllErrors().forEach($ -> {
             if ($ instanceof FieldError) {
@@ -64,9 +66,9 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
-                                                                         HttpHeaders headers, HttpStatus status,
-                                                                         WebRequest request) {
+    public ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+                                                                      HttpHeaders headers, HttpStatus status,
+                                                                      WebRequest request) {
         log.error("Exception handling BY handleHttpRequestMethodNotSupported:: " + ex.getMessage());
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.METHOD_NOT_ALLOWED),
                 HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase());
@@ -74,7 +76,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleExceptionInternal:: " + ex.getMessage());
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
                 ex.getMessage());
@@ -82,7 +84,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(
+    public ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleNoHandlerFoundException:: " + ex.getMessage());
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.NOT_FOUND),
@@ -91,7 +93,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleBindException:: " + ex.getMessage());
         HashMap<String, String> beanValidation = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach($ -> {
@@ -107,7 +109,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleServletRequestBindingException:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.BAD_REQUEST),
@@ -116,7 +118,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleMissingServletRequestPart:: " + ex.getMessage());
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.BAD_REQUEST),
                 HttpStatus.BAD_REQUEST.getReasonPhrase());
@@ -124,7 +126,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleMissingServletRequestParameter:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.BAD_REQUEST),
@@ -133,7 +135,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleHttpMediaTypeNotSupported:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE),
@@ -142,7 +144,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleHttpMediaTypeNotAcceptable:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.NOT_ACCEPTABLE),
@@ -151,7 +153,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleHttpMediaTypeNotAcceptable:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
@@ -160,7 +162,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleHttpMediaTypeNotAcceptable:: " + ex.getMessage());
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
                 ex.getMessage());
@@ -168,7 +170,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleTypeMismatch:: " + ex.getMessage());
         ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.BAD_REQUEST),
@@ -177,7 +179,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleHttpMessageNotReadable:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.BAD_REQUEST),
@@ -186,7 +188,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error("Exception handling BY handleHttpMessageNotWritable:: " + ex.getMessage());
 //        ex.printStackTrace();
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),
@@ -195,7 +197,7 @@ public class CustomExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
+    public ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
         log.error("Exception handling BY handleAsyncRequestTimeoutException:: " + ex.getMessage());
         RestResponse.error errorResponse = new RestResponse.error(String.valueOf(HttpStatus.SERVICE_UNAVAILABLE),
                 HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase());

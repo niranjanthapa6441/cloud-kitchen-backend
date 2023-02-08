@@ -5,10 +5,14 @@ spring:
     password: 6441
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
     show-sql: false
     open-in-view: false
+server:
+  servlet:
+    context-path: /cloudkitchen/api/v1
+  port: 8080

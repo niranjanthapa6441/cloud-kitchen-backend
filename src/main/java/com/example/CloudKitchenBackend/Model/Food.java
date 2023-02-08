@@ -28,5 +28,4 @@ public class Food {
 
     @Column(name = "name",nullable = false)
     private String name;
-
 }

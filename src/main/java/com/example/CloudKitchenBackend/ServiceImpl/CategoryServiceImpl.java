@@ -1,13 +1,18 @@
 package com.example.CloudKitchenBackend.ServiceImpl;
 
+import com.example.CloudKitchenBackend.DTO.CategoryDTO;
 import com.example.CloudKitchenBackend.Model.Category;
 import com.example.CloudKitchenBackend.Repositories.CategoryRepo;
 import com.example.CloudKitchenBackend.Request.CategoryRequest;
 import com.example.CloudKitchenBackend.Service.CategoryService;
 import com.example.CloudKitchenBackend.Util.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,14 +35,32 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findAll() {
-        return repo.findAll();
+    public CategoryDTO findAll(String category, int page, int size) {
+        List<Category> categories = new ArrayList<>();
+        Pageable paging= PageRequest.of(page, size);
+        Page<Category> pageCategories;
+        if (category == null)
+            pageCategories= repo.findAll(paging);
+        else
+            pageCategories= repo.findByCategory(category,paging);
+        categories = pageCategories.getContent();
+        CategoryDTO categoryDTO = toCategoryDTO(categories,pageCategories.getNumber(),pageCategories.getTotalElements(),pageCategories.getTotalPages());
+        return categoryDTO;
     }
+
+    private CategoryDTO toCategoryDTO(List<Category> categories, int number, long totalElements, int totalPages) {
+        return CategoryDTO.builder().
+                categories(categories).
+                currentPage(number).
+                totalElements(totalElements).
+                totalPages(totalPages).build();
+    }
+
 
     @Override
     public Category findById(int id) {
         Optional<Category> category= repo.findById(id);
-        if (category.isEmpty()){
+        if (!category.isPresent()){
             throw new NullPointerException("Category Not Found");
         }
         return category.get();
