@@ -9,14 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author itech
- * Date of Creation: 3/24/20
- */
 public class JsonUtil {
     private static Gson gson = (new GsonBuilder())
-//            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
-//            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
             .setPrettyPrinting()
             .create();
 
