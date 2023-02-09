@@ -26,6 +26,7 @@ public class MenuFood {
     @JoinColumn(name="meal_id")
     private Meal meal;
 
+    @Lob
     @Column(name = "description", nullable = false)
     private String Description;
 

@@ -27,10 +27,10 @@ public class Payment {
     private LocalTime paymentTime;
 
     @Column(name = "payment_partner",nullable = false)
-    private String payment_partner;
+    private String paymentPartner;
 
     @Column(name = "payment_method",nullable = false)
-    private String payment_method;
+    private String paymentMethod;
 
     @Column(nullable = false)
     private String status;

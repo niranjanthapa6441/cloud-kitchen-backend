@@ -14,7 +14,7 @@ public class Restaurant {
     @Column(name = "restaurant_id")
     private String id;
 
-    @Column(name = "name",unique = true, nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
 
     @Column(name = "country_code", nullable = false,length = 5)
@@ -30,6 +30,9 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name = "address_id")
-    private RestaurantAddress CompanyAddress;
-    private String Status;
+    private RestaurantAddress companyAddress;
+    private String status;
+
+    @Column(nullable = false)
+    private String password;
 }

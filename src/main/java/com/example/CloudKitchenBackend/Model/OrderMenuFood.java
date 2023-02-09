@@ -23,4 +23,7 @@ public class OrderMenuFood {
     @JoinColumn(name = "menu_food_id")
     private MenuFood menuFood;
 
+    @Column(nullable = false)
+    private int quantity;
+
 }
