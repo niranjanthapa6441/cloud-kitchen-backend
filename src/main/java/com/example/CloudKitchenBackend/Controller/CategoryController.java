@@ -18,7 +18,7 @@ public class CategoryController {
     @Autowired
     private CategoryServiceImpl service;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> categories(
             @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,

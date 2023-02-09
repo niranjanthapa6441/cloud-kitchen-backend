@@ -18,7 +18,7 @@ public class RestaurantAddress {
     private String country;
 
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "state", nullable = false)
     private String state;
 
     @Column(name = "district",nullable = false)
