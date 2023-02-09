@@ -22,10 +22,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepo repo;
     @Override
-    public String save(CategoryRequest request) {
+    public Category save(CategoryRequest request) {
         checkValidation(request);
-        repo.save(toCategory(request));
-        return "Category Saved Successfully";
+        return repo.save(toCategory(request));
     }
 
     @Override

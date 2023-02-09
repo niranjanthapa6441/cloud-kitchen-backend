@@ -2,7 +2,6 @@ package com.example.CloudKitchenBackend.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity

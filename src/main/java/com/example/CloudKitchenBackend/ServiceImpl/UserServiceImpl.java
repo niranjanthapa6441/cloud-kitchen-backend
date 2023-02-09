@@ -1,6 +1,10 @@
 package com.example.CloudKitchenBackend.ServiceImpl;
 
+import com.example.CloudKitchenBackend.DTO.FoodDTO;
+import com.example.CloudKitchenBackend.DTO.FoodListDTO;
 import com.example.CloudKitchenBackend.DTO.UserDTO;
+import com.example.CloudKitchenBackend.DTO.UserListDTO;
+import com.example.CloudKitchenBackend.Model.Food;
 import com.example.CloudKitchenBackend.Model.Role;
 import com.example.CloudKitchenBackend.Model.User;
 import com.example.CloudKitchenBackend.Repositories.RoleRepo;
@@ -12,7 +16,13 @@ import com.example.CloudKitchenBackend.Util.CustomException;
 import com.example.CloudKitchenBackend.Util.DateTimeFormatter;
 import com.example.CloudKitchenBackend.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -38,10 +48,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO users(String phoneNumber, String role, int page, int size) {
-        return null;
+    public UserListDTO users(String phoneNumber, String role, int page, int size) {
+        List<User> users = new ArrayList<>();
+        List<UserDTO> usersList = new ArrayList<>();
+        Pageable paging= PageRequest.of(page, size);
+        Page<User> pageUsers = null;
+        if (phoneNumber == null && role == null)
+            pageUsers= repo.findAll(paging);
+        else if(phoneNumber != null)
+            pageUsers= repo.findUserByPhoneNumber(phoneNumber,paging);
+        else if (role != null)
+            pageUsers= repo.findUserByRole(ERole.valueOf(role),paging);
+        else if(phoneNumber != null && role != null)
+            pageUsers= repo.findUserByPhoneNumberAndRole(phoneNumber,role,paging);
+        users = pageUsers.getContent();
+        for (User user:users
+        ) {
+            usersList.add(toUserDTO(user));
+        }
+        UserListDTO userListDTO = toUserListDTO(usersList,pageUsers.getNumber(),pageUsers.getTotalElements(),pageUsers.getTotalPages());
+        return userListDTO;
     }
-
     @Override
     public UserDTO findById(int id) {
         return null;
@@ -95,10 +122,10 @@ public class UserServiceImpl implements UserService {
     private void checkValidation(UserSignUpRequest request) {
         checkEmail(request.getEmail());
         checkUsername(request.getUsername());
-        checkPhonenumber(request.getPhoneNumber());
+        checkPhoneNumber(request.getPhoneNumber());
     }
 
-    private void checkPhonenumber(String phoneNumber) {
+    private void checkPhoneNumber(String phoneNumber) {
         if(repo.findUserByPhoneNumber(phoneNumber).isPresent()){
             throw new CustomException(CustomException.Type.PHONE_NUMBER_ALREADY_EXISTS);
         }
@@ -109,7 +136,14 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(CustomException.Type.USERNAME_ALREADY_EXIST);
         }
     }
-
+    private UserListDTO toUserListDTO(List<UserDTO> usersList, int number, long totalElements, int totalPages) {
+        return UserListDTO.builder()
+                .userList(usersList).
+                currentPage(number).
+                totalPages(totalPages).
+                totalElements(totalElements)
+                .build();
+    }
     private void checkEmail(String email) {
         if(repo.findUserByEmail(email).isPresent()){
             throw new CustomException(CustomException.Type.EMAIL_ALREADY_EXITS);

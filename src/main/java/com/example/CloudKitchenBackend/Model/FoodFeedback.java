@@ -12,6 +12,7 @@ public class FoodFeedback {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(strategy = "uuid",name = "system-uuid")
     private String id;
+    @Lob
     @Column(nullable = false)
     private String feedback;
     @Column(nullable = false)
@@ -20,6 +21,6 @@ public class FoodFeedback {
     @JoinColumn(name = "user_id")
     private User customer;
     @ManyToOne
-    @JoinColumn(name = "order_menu_food_id")
-    private OrderMenuFood orderMenuFood;
+    @JoinColumn(name = "menu_food_id")
+    private MenuFood MenuFood;
 }
