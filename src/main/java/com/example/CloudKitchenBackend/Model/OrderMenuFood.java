@@ -26,4 +26,10 @@ public class OrderMenuFood {
     @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false, name = "unit_price")
+    private double unitPrice;
+
+    @Column(nullable = false)
+    private double price;
+
 }

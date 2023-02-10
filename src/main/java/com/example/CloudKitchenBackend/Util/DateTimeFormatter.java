@@ -2,6 +2,10 @@ package com.example.CloudKitchenBackend.Util;
 
 import lombok.Data;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -37,5 +41,16 @@ public class DateTimeFormatter {
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
         LocalDateTime dateTime = LocalDateTime.parse(string, formatter);
         return dateTime;
+    }
+    public Time getTimeFromString(String time) {
+        DateFormat formatter = new SimpleDateFormat("HH:mm");
+
+        try{
+            Time timeValue = new java.sql.Time(formatter.parse(time).getTime());
+            return timeValue;
+        }
+        catch (Exception e){
+            throw new CustomException(CustomException.Type.TIME_INVALID);
+        }
     }
 }

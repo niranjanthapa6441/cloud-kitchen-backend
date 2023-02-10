@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public UserListDTO users(String phoneNumber, String role, int page, int size) {
         List<User> users = new ArrayList<>();
         List<UserDTO> usersList = new ArrayList<>();
-        Pageable paging= PageRequest.of(page, size);
+        Pageable  paging= PageRequest.of(page, size);
         Page<User> pageUsers = null;
         if (phoneNumber == null && role == null)
             pageUsers= repo.findAll(paging);

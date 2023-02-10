@@ -20,6 +20,8 @@ public class CustomException extends RuntimeException {
     public enum Type {
         CATEGORY_ALREADY_EXIST("category already exist",500),
         DATE_INVALID("Invalid Date Format", 501),
+        TIME_INVALID("Invalid Time Format", 501),
+
         PHONE_NUMBER_ALREADY_EXISTS("Phone Number already exists",500),
         EMAIL_ALREADY_EXITS("Email Already Exists", 500),
         USERNAME_ALREADY_EXIST("Username already Exists", 500);

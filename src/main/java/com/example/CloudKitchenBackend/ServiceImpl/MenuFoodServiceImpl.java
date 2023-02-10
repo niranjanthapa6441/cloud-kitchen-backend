@@ -1,6 +1,6 @@
 package com.example.CloudKitchenBackend.ServiceImpl;
 
-import com.example.CloudKitchenBackend.DTO.MenuFoodDTO;
+import com.example.CloudKitchenBackend.DTO.FoodMenuDTO;
 import com.example.CloudKitchenBackend.Model.MenuFood;
 import com.example.CloudKitchenBackend.Request.MenuFoodRequest;
 import com.example.CloudKitchenBackend.Service.MenuFoodService;
@@ -21,7 +21,7 @@ public class MenuFoodServiceImpl implements MenuFoodService {
     }
 
     @Override
-    public MenuFoodDTO findAll(String name, int page, int size) {
+    public FoodMenuDTO findAll(String name, int page, int size) {
         return null;
     }
 
