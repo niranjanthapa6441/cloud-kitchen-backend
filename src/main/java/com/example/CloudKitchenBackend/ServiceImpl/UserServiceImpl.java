@@ -1,10 +1,7 @@
 package com.example.CloudKitchenBackend.ServiceImpl;
 
-import com.example.CloudKitchenBackend.DTO.FoodDTO;
-import com.example.CloudKitchenBackend.DTO.FoodListDTO;
 import com.example.CloudKitchenBackend.DTO.UserDTO;
 import com.example.CloudKitchenBackend.DTO.UserListDTO;
-import com.example.CloudKitchenBackend.Model.Food;
 import com.example.CloudKitchenBackend.Model.Role;
 import com.example.CloudKitchenBackend.Model.User;
 import com.example.CloudKitchenBackend.Repositories.RoleRepo;

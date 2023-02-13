@@ -11,15 +11,6 @@ import java.util.List;
 @Data
 @Builder
 public class OrderDetailsDTO {
-    private double totalPrice;
-
-    private int totalItems;
-
-    private LocalDate orderDate;
-
-    private LocalTime orderTime;
-
-    private String status;
-
+    private CustomerOrderDTO orderDTO;
     List<OrderFoodDTO> orderFoods;
 }

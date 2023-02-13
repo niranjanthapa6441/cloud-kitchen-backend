@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @Data
 @Builder
 public class CustomerOrderDTO {
+    private String orderId;
     private double totalPrice;
 
     private int totalItems;
