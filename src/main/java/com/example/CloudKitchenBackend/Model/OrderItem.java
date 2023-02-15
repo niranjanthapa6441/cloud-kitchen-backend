@@ -5,9 +5,9 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "order_menu_food")
+@Table(name = "order_item")
 @Data
-public class OrderMenuFood {
+public class OrderItem {
 
     @Id
     @GeneratedValue(generator="system-uuid")

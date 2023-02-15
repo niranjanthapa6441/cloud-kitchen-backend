@@ -1,14 +1,14 @@
 package com.example.CloudKitchenBackend.Repositories;
 
 import com.example.CloudKitchenBackend.Model.Order;
-import com.example.CloudKitchenBackend.Model.OrderMenuFood;
+import com.example.CloudKitchenBackend.Model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface OrderMenuFoodRepo extends JpaRepository<OrderMenuFood,String> {
+public interface OrderMenuFoodRepo extends JpaRepository<OrderItem,String> {
 
-    List<OrderMenuFood> findOrderByOrder(Order order);
+    List<OrderItem> findOrderByOrder(Order order);
 }

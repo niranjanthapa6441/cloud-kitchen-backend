@@ -2,13 +2,14 @@ package com.example.CloudKitchenBackend.DTO;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Data
 @Builder
 public class MenuFoodListDTO {
-    List<FoodMenuDTO> menuFoods;
+    Page<FoodMenuDTO> menuFoods;
 
     private int currentPage;
 

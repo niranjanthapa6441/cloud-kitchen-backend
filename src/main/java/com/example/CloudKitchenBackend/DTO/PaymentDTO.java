@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class PaymentDTO {
-
     private String paidAmount;
 
     private String paymentDate;
@@ -17,5 +16,6 @@ public class PaymentDTO {
 
     private String paymentPartner;
 
+    private String status;
 
 }
