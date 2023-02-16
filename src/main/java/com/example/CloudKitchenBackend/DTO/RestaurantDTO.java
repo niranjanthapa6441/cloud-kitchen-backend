@@ -10,14 +10,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 public class RestaurantDTO {
     private String id;
-
     private String name;
-
     private String countryCode;
     private String phoneNumber;
-
     private String telephoneNumber;
-
     private String email;
     private String address;
     private String status;

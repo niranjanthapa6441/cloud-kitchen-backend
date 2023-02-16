@@ -57,7 +57,6 @@ public class MenuServiceImpl implements MenuService {
                 query.orderBy(cb.desc(menuFoodRoot.get("price")));
             }
         }
-
         TypedQuery<MenuFood> typedQuery = entityManager.createQuery(query);
         List<MenuFood> menuFoods = typedQuery.getResultList();
         Pageable pageable = PageRequest.of(page, size);
