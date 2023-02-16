@@ -1,8 +1,12 @@
 package com.example.CloudKitchenBackend.ServiceImpl;
 
-import com.example.CloudKitchenBackend.DTO.FoodMenuDTO;
+import com.example.CloudKitchenBackend.DTO.MenuDTO;
+import com.example.CloudKitchenBackend.DTO.MenuFoodDTO;
 import com.example.CloudKitchenBackend.DTO.MenuFoodListDTO;
+import com.example.CloudKitchenBackend.DTO.MenuListDTO;
 import com.example.CloudKitchenBackend.Model.*;
+import com.example.CloudKitchenBackend.Request.MenuFoodRequest;
+import com.example.CloudKitchenBackend.Request.MenuRequest;
 import com.example.CloudKitchenBackend.Service.MenuService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -21,6 +25,32 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
     @Autowired
     EntityManager entityManager;
+
+    @Override
+    public MenuDTO save(MenuRequest request) {
+        return null;
+    }
+
+    @Override
+    public MenuDTO delete(int id) {
+        return null;
+    }
+
+    @Override
+    public MenuListDTO findAll(String name, int page, int size) {
+        return null;
+    }
+
+    @Override
+    public MenuDTO findById(int id) {
+        return null;
+    }
+
+    @Override
+    public MenuDTO update(MenuFoodRequest request, int id) {
+        return null;
+    }
+
     public MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String categoryName, String mealName, Double rating, String sortBy, int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MenuFood> query = cb.createQuery(MenuFood.class);
@@ -60,21 +90,21 @@ public class MenuServiceImpl implements MenuService {
         TypedQuery<MenuFood> typedQuery = entityManager.createQuery(query);
         List<MenuFood> menuFoods = typedQuery.getResultList();
         Pageable pageable = PageRequest.of(page, size);
-        List<FoodMenuDTO> foodMenuDTOS=toMenuFoodDTO(menuFoods);
-        Page<FoodMenuDTO> resultPage = null;
-        if (foodMenuDTOS.size() > 0) {
+        List<MenuFoodDTO> menuFoodDTOS =toMenuFoodDTO(menuFoods);
+        Page<MenuFoodDTO> resultPage = null;
+        if (menuFoodDTOS.size() > 0) {
             int from = page * size;
             int to = from + size;
-            if (foodMenuDTOS.size() < to) {
-                to = foodMenuDTOS.size();
+            if (menuFoodDTOS.size() < to) {
+                to = menuFoodDTOS.size();
             }
-            resultPage = new PageImpl<>(foodMenuDTOS.subList(from, to), pageable, foodMenuDTOS.size()); // list is sliced according to page number and size
+            resultPage = new PageImpl<>(menuFoodDTOS.subList(from, to), pageable, menuFoodDTOS.size()); // list is sliced according to page number and size
         } else
             resultPage = new PageImpl<>(new ArrayList<>(), pageable, 0);
         return toMenuFoodListDTO(resultPage,resultPage.getNumber(),resultPage.getTotalPages(),resultPage.getTotalElements());
     }
 
-    private MenuFoodListDTO toMenuFoodListDTO(Page<FoodMenuDTO> resultPage, int number, int totalPages, long totalElements) {
+    private MenuFoodListDTO toMenuFoodListDTO(Page<MenuFoodDTO> resultPage, int number, int totalPages, long totalElements) {
         return MenuFoodListDTO.builder()
                 .menuFoods(resultPage)
                 .currentPage(number)
@@ -83,18 +113,18 @@ public class MenuServiceImpl implements MenuService {
                 .build();
     }
 
-    private List<FoodMenuDTO> toMenuFoodDTO(List<MenuFood> menuFoods) {
-        List<FoodMenuDTO> foodMenuDTOs = new ArrayList<>();
+    private List<MenuFoodDTO> toMenuFoodDTO(List<MenuFood> menuFoods) {
+        List<MenuFoodDTO> menuFoodDTOS = new ArrayList<>();
         for (MenuFood menuFood : menuFoods) {
-            FoodMenuDTO foodMenuDTO = FoodMenuDTO.builder()
+            MenuFoodDTO menuFoodDTO = MenuFoodDTO.builder()
                     .name(menuFood.getFood().getName())
                     .description(menuFood.getDescription())
                     .restaurantName(menuFood.getMenu().getRestaurant().getName())
                     .category(menuFood.getFood().getCategory().getCategory())
                     .Meal(menuFood.getMeal().getMeal())
                     .build();
-            foodMenuDTOs.add(foodMenuDTO);
+            menuFoodDTOS.add(menuFoodDTO);
         }
-        return foodMenuDTOs;
+        return menuFoodDTOS;
     }
 }

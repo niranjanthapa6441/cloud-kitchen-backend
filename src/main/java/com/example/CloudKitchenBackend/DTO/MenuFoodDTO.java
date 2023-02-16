@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FoodMenuDTO {
+public class MenuFoodDTO {
     private String name;
     private String description;
 
