@@ -26,7 +26,7 @@ public class Payment {
     @Column(name = "payment_time",nullable = false)
     private LocalTime paymentTime;
 
-    @Column(name = "payment_partner",nullable = false)
+    @Column(name = "payment_partner")
     private String paymentPartner;
 
     @Column(name = "payment_method",nullable = false)

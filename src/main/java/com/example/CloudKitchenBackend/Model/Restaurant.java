@@ -19,7 +19,7 @@ public class Restaurant {
 
     @Column(name = "country_code", nullable = false,length = 5)
     private String countryCode;
-    @Column(name ="phone_number", nullable = false, length = 10, unique = true)
+    @Column(name ="phone_number", nullable = false,length = 10,unique = true)
     private String phoneNumber;
 
     @Column(name = "telephone_number",nullable = false,length = 10, unique = true)

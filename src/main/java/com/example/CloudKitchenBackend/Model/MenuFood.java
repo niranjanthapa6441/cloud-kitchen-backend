@@ -2,6 +2,7 @@ package com.example.CloudKitchenBackend.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.checkerframework.checker.units.qual.C;
 import org.hibernate.annotations.GenericGenerator;
 
 @Data
@@ -26,10 +27,18 @@ public class MenuFood {
     @JoinColumn(name="meal_id")
     private Meal meal;
 
-    @Lob
-    @Column(name = "description", nullable = false)
+    @Column(name = "description",columnDefinition = "text", nullable = false)
     private String Description;
 
     @Column(name = "price", nullable = false)
     private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(name = "discount_percentage",length = 4)
+    private double discountPercentage;
+
+    private double rating;
 }

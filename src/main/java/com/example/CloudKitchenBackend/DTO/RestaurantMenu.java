@@ -9,5 +9,6 @@ public class RestaurantMenu {
     private String rating;
     private String deliveryTime;
     private String category;
+    private double price;
     private String Meal;
 }

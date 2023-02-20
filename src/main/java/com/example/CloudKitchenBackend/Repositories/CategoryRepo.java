@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepo extends JpaRepository<Category,Integer> {
     Page<Category> findByCategory(String category, Pageable paging);
-    Optional<Category> findByCategory(String category);
+    Optional<Category> findByCategory(String foodType);
 }

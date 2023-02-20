@@ -20,6 +20,6 @@ public interface MenuService {
     MenuDTO findById(int id);
 
     MenuDTO update(MenuRequest request, int id);
-    MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String categoryName, String mealName, Double rating, String sortBy, int page, int size);
+    MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String categoryName, String mealName, double rating, String sortBy, int page, int size);
 
 }

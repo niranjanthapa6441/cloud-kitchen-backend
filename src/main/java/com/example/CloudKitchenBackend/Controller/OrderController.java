@@ -40,7 +40,7 @@ public class OrderController {
     public ResponseEntity<Object> update(@PathVariable String id){
         return RestResponse.ok(service.update(id),"Order updated Successful");
     }
-    @GetMapping(value = "{/id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/customer/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findByCustomerId(
             @PathVariable int id,
             @RequestParam(defaultValue = "0") int page,

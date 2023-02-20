@@ -12,7 +12,7 @@ public class OrderItem {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(strategy = "uuid",name="system-uuid")
-    @Column(name = "order_menu_food_id")
+    @Column(name = "order_item_id")
     private String id;
 
     @ManyToOne

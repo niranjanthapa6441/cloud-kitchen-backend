@@ -28,7 +28,7 @@ public class HelperUtil {
                                 field.set(object, "");
                             }
                         } catch (IllegalAccessException | IllegalArgumentException e) {
-//                            LOG.log(Level.INFO, "ERROR AT CHECK AND CORRECT NULL VALUE OF OBJECT :: {0}", e.getMessage());
+                                //LOG.log(Level.INFO, "ERROR AT CHECK AND CORRECT NULL VALUE OF OBJECT :: {0}", e.getMessage());
                         }
                     }
                 });

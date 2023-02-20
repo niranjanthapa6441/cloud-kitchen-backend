@@ -2,9 +2,7 @@ package com.example.CloudKitchenBackend.ServiceImpl;
 
 import com.example.CloudKitchenBackend.DTO.FoodDTO;
 import com.example.CloudKitchenBackend.DTO.FoodListDTO;
-import com.example.CloudKitchenBackend.Model.Category;
 import com.example.CloudKitchenBackend.Model.Food;
-import com.example.CloudKitchenBackend.Model.MenuFood;
 import com.example.CloudKitchenBackend.Repositories.CategoryRepo;
 import com.example.CloudKitchenBackend.Repositories.FoodRepo;
 import com.example.CloudKitchenBackend.Repositories.MenuFoodRepo;
@@ -19,8 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class FoodServiceImpl implements FoodService {
@@ -45,19 +41,15 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public FoodListDTO findAll(String name, String category, int page, int size) {
+    public FoodListDTO findAll(String name, int page, int size) {
         List<Food> foods = new ArrayList<>();
         List<FoodDTO> foodDTOList = new ArrayList<>();
         Pageable paging= PageRequest.of(page, size);
         Page<Food> pageFoods = null;
-        if (category == null && name == null)
+        if (name == null)
             pageFoods= repo.findAll(paging);
-        else if(category != null)
-            pageFoods= repo.findByCategory(category,paging);
-        else if (name != null)
+        else if(name != null )
             pageFoods= repo.findByName(name,paging);
-        else if(name != null && category != null)
-            pageFoods= repo.findByCategoryAndName(category,name,paging);
         foods = pageFoods.getContent();
         for (Food food:foods
              ) {
@@ -88,21 +80,12 @@ public class FoodServiceImpl implements FoodService {
 
     private Food toFood(FoodRequest request) {
         Food food= new Food();
-        food.setCategory(findCategory(request));
         food.setName(request.getName());
         return food;
-    }
-    private Category findCategory(FoodRequest request) {
-        Optional<Category> category= repo.findByCategory(request.getCategory());
-        if (category.isPresent())
-            return category.get();
-        else
-            throw new NullPointerException("The category does not exist");
     }
     private FoodDTO toFoodDTO(Food food) {
         return FoodDTO.builder().
                 name(food.getName()).
-                category(food.getCategory().getCategory()).
                 build();
     }
     private FoodListDTO toFoodDTO(List<FoodDTO> foodDTOList, int number, long totalElements, int totalPages) {
@@ -114,5 +97,6 @@ public class FoodServiceImpl implements FoodService {
                 .build();
     }
     private void checkValidation(FoodRequest request) {
+
     }
 }

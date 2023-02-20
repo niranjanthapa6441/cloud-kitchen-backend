@@ -11,7 +11,7 @@ public interface FoodService {
     FoodDTO save(FoodRequest request);
     String delete(int id);
 
-    FoodListDTO findAll(String name, String category, int page, int size);
+    FoodListDTO findAll(String name, int page, int size);
 
     Food findById(int id);
 

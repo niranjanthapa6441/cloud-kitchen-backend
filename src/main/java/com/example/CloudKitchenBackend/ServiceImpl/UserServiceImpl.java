@@ -10,7 +10,7 @@ import com.example.CloudKitchenBackend.Request.UserSignUpRequest;
 import com.example.CloudKitchenBackend.Request.UserUpdateRequest;
 import com.example.CloudKitchenBackend.Service.UserService;
 import com.example.CloudKitchenBackend.Util.CustomException;
-import com.example.CloudKitchenBackend.Util.DateTimeFormatter;
+import com.example.CloudKitchenBackend.Util.Formatter;
 import com.example.CloudKitchenBackend.enums.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -78,11 +78,10 @@ public class UserServiceImpl implements UserService {
 
     private User toUser(UserSignUpRequest request) {
         User user= new User();
-        DateTimeFormatter dateTimeFormatter= new DateTimeFormatter();
         user.setFirstName(request.getFirstName());
         user.setMiddleName(request.getMiddleName());
         user.setLastName(request.getLastName());
-        user.setDateOfBirth(dateTimeFormatter.formatDate(request.getDateOfBirth()));
+        user.setDateOfBirth(Formatter.convertStrToDate(request.getDateOfBirth(),"yyyy-MM-dd"));
         user.setEmail(request.getEmail());
 //        user.setPassword(encoder.encode(request.getPassword()));
         user.setPassword(request.getPassword());

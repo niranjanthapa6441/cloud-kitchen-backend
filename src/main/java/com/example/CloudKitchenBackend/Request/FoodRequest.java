@@ -1,9 +1,5 @@
 package com.example.CloudKitchenBackend.Request;
 
-import com.example.CloudKitchenBackend.Model.Category;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

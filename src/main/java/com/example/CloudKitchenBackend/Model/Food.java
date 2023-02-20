@@ -22,10 +22,7 @@ public class Food {
     @Column(name = "food_id")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 
-    @Column(name = "name",unique = true, nullable = false)
+    @Column(name = "name",unique = true, nullable = false, length = 100)
     private String name;
 }

@@ -9,7 +9,7 @@ public class MenuFoodDTO {
     private String name;
     private String description;
 
-    private String rating;
+    private double rating;
 
     private String deliveryTime;
 
@@ -20,4 +20,8 @@ public class MenuFoodDTO {
     private String category;
 
     private String Meal;
+
+    private double price;
+
+    private double discountPrice;
 }

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CategoryService {
-    Category save(CategoryRequest request);
-    String delete(int id);
+   Category save(CategoryRequest request);
+   String delete(int id);
 
 
-    CategoryDTO findAll(String category, int page, int size);
+   CategoryDTO findAll(String category, int page, int size);
 
     Category findById(int id);
 

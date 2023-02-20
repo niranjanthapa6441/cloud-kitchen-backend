@@ -24,6 +24,4 @@ public class Category {
     @Column(name = "category", nullable = false, length = 20,unique = true)
     private String category;
 
-    @Column(name = "description", nullable = false)
-    private String description;
 }

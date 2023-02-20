@@ -32,13 +32,7 @@ public class RestResponse {
 
 
     public static ResponseEntity<Object> ok(Object data) {
-//        JsonObject object = null;
-//        if (data != null) {
-//            object = toJson(data);
-//        }
-//        System.out.println("OLD: "+data);
         Object data1 = HelperUtil.checkAndCorrectNullValueOfObject(data);
-//        System.out.println("NEW: "+data1);
         return new ResponseEntity<Object>(new RestResponse("200", "SUCCESS", data1), HttpStatus.OK);
     }
 

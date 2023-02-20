@@ -23,15 +23,15 @@ public class MenuController {
     public ResponseEntity<Object> findAll(
             @RequestParam(required = false) String foodName,
             @RequestParam(required = false) String restaurantName,
-            @RequestParam(required = false) String categoryName,
-            @RequestParam(required = false) String mealName,
-            @RequestParam(required = false) double rating,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String meal,
+            @RequestParam(defaultValue = "0.0") double rating,
             @RequestParam(required = false) String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
 
     ){
-        return RestResponse.ok(service.searchMenuFoods(foodName,restaurantName,categoryName,mealName,rating,sortBy,page,size),"Data Retrieval Successful");
+        return RestResponse.ok(service.searchMenuFoods(foodName,restaurantName,category,meal, rating,sortBy,page,size),"Data Retrieval Successful");
     }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(
@@ -47,7 +47,7 @@ public class MenuController {
     public ResponseEntity<Object> update(@PathVariable int id, @Valid @RequestBody MenuRequest request){
         return RestResponse.ok(service.update(request,id),"Order updated Successful");
     }
-    @GetMapping(value = "{/id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findById(
             @PathVariable int id
     ){

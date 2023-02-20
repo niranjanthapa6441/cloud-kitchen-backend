@@ -60,25 +60,24 @@ public class CategoryServiceImpl implements CategoryService {
     public Category findById(int id) {
         Optional<Category> category= repo.findById(id);
         if (!category.isPresent()){
-            throw new NullPointerException("Category Not Found");
+            throw new NullPointerException("Food Type Not Found");
         }
         return category.get();
     }
 
     @Override
     public String update(CategoryRequest request, int id) {
-        Category findCategory=findById(id);
+        Category findCategory =findById(id);
         checkValidation(request);
-        Category category=toCategory(request);
-        Category updateCategory=category;
+        Category category =toCategory(request);
+        Category updateCategory = category;
         updateCategory.setId(findCategory.getId());
         repo.save(updateCategory);
-        return "Category has been updated";
+        return "Food Type has been updated";
     }
     private Category toCategory(CategoryRequest request) {
-        Category category= new Category();
+        Category category = new Category();
         category.setCategory(request.getCategory());
-        category.setDescription(request.getDescription());
         return category;
     }
     private void checkValidation(CategoryRequest request) {
