@@ -12,7 +12,7 @@ public interface OrderService {
 
     CustomerOrderDTO cancel(String id);
 
-    CustomerOrderListDTO findAll(int id, int page, String phoneNumber);
-    CustomerOrderListDTO findOrderByCustomer(int id, int page, int size);
+    CustomerOrderListDTO findAll(String phoneNumber, int page, int size);
+    CustomerOrderListDTO findOrderByCustomer(String username, int page, int size);
 
 }

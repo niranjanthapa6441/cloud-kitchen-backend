@@ -68,14 +68,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public CustomerOrderListDTO findAll(int id, int page, String phoneNumber) {
+    public CustomerOrderListDTO findAll(String phoneNumber, int page, int size) {
         return null;
     }
 
     @Override
-    public CustomerOrderListDTO findOrderByCustomer(int id, int page, int size) {
+    public CustomerOrderListDTO findOrderByCustomer(String username, int page, int size) {
         Pageable paging=PageRequest.of(page, size);
-        Optional<User> customer= userRepo.findById(id);
+        Optional<User> customer= userRepo.findUserByUsername(username);
         Page<Order> pageOrders;
         pageOrders=orderRepo.findByCustomer(customer,paging);
         List<Order> orders= pageOrders.getContent();

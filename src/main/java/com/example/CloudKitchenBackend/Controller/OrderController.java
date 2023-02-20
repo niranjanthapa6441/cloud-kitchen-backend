@@ -24,7 +24,7 @@ public class OrderController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ){
-        return RestResponse.ok(service.findAll(page, size, phoneNumber),"Data Retrieval Successful");
+        return RestResponse.ok(service.findAll(phoneNumber, page, size),"Data Retrieval Successful");
     }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(
@@ -42,10 +42,10 @@ public class OrderController {
     }
     @GetMapping(value = "/customer/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findByCustomerId(
-            @PathVariable int id,
+            @RequestParam String username,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ){
-        return RestResponse.ok(service.findOrderByCustomer(page, size,id),"Data Retrieval Successful");
+        return RestResponse.ok(service.findOrderByCustomer(username,page,size),"Data Retrieval Successful");
     }
 }
