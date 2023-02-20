@@ -32,7 +32,11 @@ public class Payment {
     @Column(name = "payment_method",nullable = false)
     private String paymentMethod;
 
+    @Column(name = "paid_amount",nullable = false)
+    private double paidAmount;
+
     @Column(nullable = false)
     private String status;
+
 
 }

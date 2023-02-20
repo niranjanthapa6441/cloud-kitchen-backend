@@ -20,9 +20,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User customer;
-    @Column(nullable = false, name = "total_price")
-    private double totalPrice;
-
     @Column(nullable = false,name = "total_items")
     private int totalItems;
     @Column(nullable = false, name = "order_date")

@@ -56,9 +56,9 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> findOrder= orderRepo.findById(id);
         Order updateOrder = toUpdateOrder(id, findOrder);
         Order updatedOrder=orderRepo.save(updateOrder);
-        Optional<Payment> payment= paymentRepo.findByOrder(updatedOrder);
-        if (payment.get().getPaymentMethod().toLowerCase().equals("offline"))
-            paymentRepo.save(toUpdatePayment(payment.get()));
+        Payment payment = getPayment(updatedOrder);
+        if (payment.getPaymentMethod().toLowerCase().equals("offline"))
+            paymentRepo.save(toUpdatePayment(payment));
         return toCustomerOrderDTO( updatedOrder, getOrderFoods(updateOrder));
     }
 
@@ -111,7 +111,6 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderTime(LocalTime.now());
         order.setStatus("DELIVERING");
         order.setTotalItems(request.getTotalItems());
-        order.setTotalPrice(request.getTotalPrice());
         return order;
     }
     private CustomerOrderDTO toCustomerOrderDTO(Order order,
@@ -122,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderTime(order.getOrderTime())
                 .status(order.getStatus())
                 .totalItems(order.getTotalItems())
-                .totalPrice(order.getTotalPrice())
+                .totalPrice(getPayment(order).getPaidAmount())
                 .orderFoods(orderFoodDTOS)
                 .build();
     }
@@ -168,7 +167,6 @@ public class OrderServiceImpl implements OrderService {
         updateOrder.setOrderTime(findOrder.get().getOrderTime());
         updateOrder.setStatus("DELIVERED");
         updateOrder.setTotalItems(findOrder.get().getTotalItems());
-        updateOrder.setTotalPrice(findOrder.get().getTotalPrice());
         return updateOrder;
     }
     private void toPayment(OrderRequest request, Order order) {
@@ -204,5 +202,9 @@ public class OrderServiceImpl implements OrderService {
         updatePayment.setPaymentMethod(payment.getPaymentMethod());
         updatePayment.setStatus("PAID");
         return payment;
+    }
+    private Payment getPayment(Order updatedOrder) {
+        Optional<Payment> payment= paymentRepo.findByOrder(updatedOrder);
+        return payment.get();
     }
 }
