@@ -18,7 +18,7 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private CustomerOrder customerOrder;
 
     @Column(name = "payment_date")
     private LocalDate paymentDate;

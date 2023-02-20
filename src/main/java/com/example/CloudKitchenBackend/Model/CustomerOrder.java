@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Data
 @Entity
 @Table(name = "customer_order")
-public class Order {
+public class CustomerOrder {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(strategy = "uuid",name="system-uuid")

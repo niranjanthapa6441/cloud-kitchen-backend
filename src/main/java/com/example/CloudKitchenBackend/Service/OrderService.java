@@ -13,6 +13,6 @@ public interface OrderService {
     CustomerOrderDTO cancel(String id);
 
     CustomerOrderListDTO findAll(String phoneNumber, int page, int size);
-    CustomerOrderListDTO findOrderByCustomer(String username, int page, int size);
+    CustomerOrderListDTO findOrderByCustomer(String username,String period,String sortBy,String startDate, String endDate,int page, int size);
 
 }

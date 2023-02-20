@@ -43,9 +43,13 @@ public class OrderController {
     @GetMapping(value = "/customer/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findByCustomerId(
             @RequestParam String username,
+            @RequestParam String period,
+            @RequestParam String sortBy,
+            @RequestParam String startDate,
+            @RequestParam String endDate,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ){
-        return RestResponse.ok(service.findOrderByCustomer(username,page,size),"Data Retrieval Successful");
+        return RestResponse.ok(service.findOrderByCustomer(username, period, sortBy, startDate, endDate, page, size),"Data Retrieval Successful");
     }
 }
