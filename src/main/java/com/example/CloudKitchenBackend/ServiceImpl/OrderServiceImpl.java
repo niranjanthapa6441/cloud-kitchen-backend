@@ -35,6 +35,10 @@ public class OrderServiceImpl implements OrderService {
     FoodRepo foodRepo;
     @Autowired
     MenuFoodRepo menuFoodRepo;
+
+    @Autowired
+    PaymentRepo paymentRepo;
+
     @Override
     public CustomerOrderDTO save(OrderRequest request) {
         Optional<User> findUser= userRepo.findUserByUsername(request.getUsername());
@@ -42,7 +46,8 @@ public class OrderServiceImpl implements OrderService {
         if(findUser.isPresent())
             user=findUser.get();
         Order order= orderRepo.save(toOrder(request,user));
-        saveOrder(request, order);
+        toOrderItem(request, order);
+        toPayment(request, order);
         return toCustomerOrderDTO(order,getOrderFoods(order));
     }
 
@@ -51,6 +56,9 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> findOrder= orderRepo.findById(id);
         Order updateOrder = toUpdateOrder(id, findOrder);
         Order updatedOrder=orderRepo.save(updateOrder);
+        Optional<Payment> payment= paymentRepo.findByOrder(updatedOrder);
+        if (payment.get().getPaymentMethod().toLowerCase().equals("offline"))
+            paymentRepo.save(toUpdatePayment(payment.get()));
         return toCustomerOrderDTO( updatedOrder, getOrderFoods(updateOrder));
     }
 
@@ -74,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
         return toCustomerOrderListDTO(orders,pageOrders.getNumber(),pageOrders.getTotalElements(),pageOrders.getTotalPages());
     }
 
-    private OrderItem saveOrder(OrderRequest request, Order order) {
+    private OrderItem toOrderItem(OrderRequest request, Order order) {
         OrderItem orderMenuFood= new OrderItem();
         List<OrderFoodRequest> foods= request.getFoods();
         for (OrderFoodRequest foodRequest:foods
@@ -162,5 +170,39 @@ public class OrderServiceImpl implements OrderService {
         updateOrder.setTotalItems(findOrder.get().getTotalItems());
         updateOrder.setTotalPrice(findOrder.get().getTotalPrice());
         return updateOrder;
+    }
+    private void toPayment(OrderRequest request, Order order) {
+        if (request.getPaymentMethod().toLowerCase().equals("online"))
+            paymentRepo.save(toOnlinePayment(request, order));
+        else
+            paymentRepo.save(toOfflinePayment(request, order));
+    }
+    private Payment toOnlinePayment(OrderRequest request, Order order) {
+        Payment payment= new Payment();
+        payment.setOrder(order);
+        payment.setPaymentDate(LocalDate.now());
+        payment.setPaymentTime(LocalTime.now());
+        payment.setPaymentPartner(request.getPaymentPartner());
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setStatus("PAID");
+        return payment;
+    }
+    private Payment toOfflinePayment(OrderRequest request, Order order) {
+        Payment payment= new Payment();
+        payment.setOrder(order);
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setStatus("UNPAID");
+        return payment;
+    }
+    private Payment toUpdatePayment(Payment payment) {
+        Payment updatePayment= new Payment();
+        updatePayment.setId(payment.getId());
+        updatePayment.setOrder(payment.getOrder());
+        updatePayment.setPaymentDate(LocalDate.now());
+        updatePayment.setPaymentTime(LocalTime.now());
+        updatePayment.setPaymentPartner(payment.getPaymentPartner());
+        updatePayment.setPaymentMethod(payment.getPaymentMethod());
+        updatePayment.setStatus("PAID");
+        return payment;
     }
 }

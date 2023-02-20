@@ -20,10 +20,10 @@ public class Payment {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Column(name = "payment_date",nullable = false)
+    @Column(name = "payment_date")
     private LocalDate paymentDate;
 
-    @Column(name = "payment_time",nullable = false)
+    @Column(name = "payment_time")
     private LocalTime paymentTime;
 
     @Column(name = "payment_partner")
