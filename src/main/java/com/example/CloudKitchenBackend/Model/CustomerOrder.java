@@ -30,4 +30,5 @@ public class CustomerOrder {
 
     @Column(nullable = false)
     private String status;
+
 }

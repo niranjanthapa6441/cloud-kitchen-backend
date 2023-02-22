@@ -25,16 +25,16 @@ public class Formatter {
         }
         return dateStr;
     }
-    public LocalDateTime formatLocalDateTime(String string){
+    public static LocalDateTime formatLocalDateTime(String string){
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
         LocalDateTime dateTime = LocalDateTime.parse(string, formatter);
         return dateTime;
     }
-    public Time getTimeFromString(String time) {
+    public static Time getTimeFromString(String time) {
         DateFormat formatter = new SimpleDateFormat("HH:mm");
 
         try{
-            Time timeValue = new java.sql.Time(formatter.parse(time).getTime());
+            Time timeValue = new Time(formatter.parse(time).getTime());
             return timeValue;
         }
         catch (Exception e){

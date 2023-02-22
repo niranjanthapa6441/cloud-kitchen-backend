@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class MenuServiceImpl implements MenuService {
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public MenuDTO save(MenuRequest request) {

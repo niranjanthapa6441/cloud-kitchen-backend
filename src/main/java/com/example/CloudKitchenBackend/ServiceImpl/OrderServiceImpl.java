@@ -14,9 +14,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,24 +26,24 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    UserRepo userRepo;
+    private UserRepo userRepo;
     @Autowired
-    OrderRepo orderRepo;
+    private OrderRepo orderRepo;
 
     @Autowired
-    OrderMenuFoodRepo orderMenuFoodRepo;
+    private OrderItemRepo orderItemRepo;
     @Autowired
-    MenuRepo menuRepo;
+    private MenuRepo menuRepo;
     @Autowired
-    FoodRepo foodRepo;
+    private FoodRepo foodRepo;
     @Autowired
-    MenuFoodRepo menuFoodRepo;
+    private MenuFoodRepo menuFoodRepo;
 
     @Autowired
-    PaymentRepo paymentRepo;
+    private PaymentRepo paymentRepo;
 
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public CustomerOrderDTO save(OrderRequest request) {
@@ -87,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
         CriteriaQuery<CustomerOrder> query = cb.createQuery(CustomerOrder.class);
 
         Root<CustomerOrder> orderRoot = query.from(CustomerOrder.class);
-        Join<CustomerOrder, User> customerJoin = orderRoot.join("user");
+        Join<CustomerOrder, User> customerJoin = orderRoot.join("customer");
 
         query.select(orderRoot);
         List<Predicate> predicates = new ArrayList<>();
@@ -100,16 +97,22 @@ public class OrderServiceImpl implements OrderService {
             switch (period.toLowerCase()){
                 case "daily":
                     predicates.add(cb.equal(orderRoot.get("orderDate"),LocalDate.now()));
+                    break;
                 case "weekly":
                     predicates.add(cb.between(orderRoot.get("orderDate"),LocalDate.now().minus(7, ChronoUnit.DAYS),LocalDate.now()));
+                    break;
                 case "monthly":
                     predicates.add(cb.between(orderRoot.get("orderDate"),LocalDate.now().minus(1, ChronoUnit.MONTHS),LocalDate.now()));
+                    break;
                 case "quarterly":
                     predicates.add(cb.between(orderRoot.get("orderDate"),LocalDate.now().minus(3, ChronoUnit.MONTHS),LocalDate.now()));
+                    break;
                 case "semi-annual":
                     predicates.add(cb.between(orderRoot.get("orderDate"),LocalDate.now().minus(6, ChronoUnit.MONTHS),LocalDate.now()));
+                    break;
                 case "annual":
                     predicates.add(cb.between(orderRoot.get("orderDate"),LocalDate.now().minus(1, ChronoUnit.YEARS),LocalDate.now()));
+                    break;
             }
         }
 
@@ -121,7 +124,6 @@ public class OrderServiceImpl implements OrderService {
         customerOrderList.add(cb.desc(orderRoot.get("orderDate")));
         query.orderBy(customerOrderList);
         query.where(cb.and(predicates.toArray(new Predicate[0])));
-
         List<CustomerOrder> orderItems = entityManager.createQuery(query).getResultList();
         TypedQuery<CustomerOrder> typedQuery = entityManager.createQuery(query);
         typedQuery.setFirstResult((page - 1) * size);
@@ -139,7 +141,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderFoodRequest> foods= request.getFoods();
         for (OrderFoodRequest foodRequest:foods
         ) {
-            orderMenuFood = orderMenuFoodRepo.save(toOrderMenuFood(foodRequest, customerOrder));
+            orderMenuFood = orderItemRepo.save(toOrderMenuFood(foodRequest, customerOrder));
         }
         return orderMenuFood;
     }
@@ -150,7 +152,6 @@ public class OrderServiceImpl implements OrderService {
         OrderItem orderMenuFood= new OrderItem();
         orderMenuFood.setCustomerOrder(customerOrder);
         orderMenuFood.setQuantity(foodRequest.getQuantity());
-        orderMenuFood.setPrice(foodRequest.getPrice());
         orderMenuFood.setMenuFood(findMenuFood);
         return orderMenuFood;
     }
@@ -169,8 +170,8 @@ public class OrderServiceImpl implements OrderService {
                                                 List<OrderFoodDTO> orderFoodDTOS) {
         return CustomerOrderDTO.builder().
                 orderId(customerOrder.getId())
-                .orderDate(customerOrder.getOrderDate())
-                .orderTime(customerOrder.getOrderTime())
+                .orderDate(customerOrder.getOrderDate().toString())
+                .orderTime(customerOrder.getOrderTime().toString())
                 .status(customerOrder.getStatus())
                 .totalItems(customerOrder.getTotalItems())
                 .totalPrice(getPayment(customerOrder).getPaidAmount())
@@ -192,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private List<OrderFoodDTO> getOrderFoods(CustomerOrder customerOrder) {
-        List<OrderItem> orderedFoods= orderMenuFoodRepo.findOrderByOrder(customerOrder);
+        List<OrderItem> orderedFoods= orderItemRepo.findCustomerOrderByCustomerOrder(customerOrder);
         List<OrderFoodDTO> orderFoodDTOS = getFoodDTOS(orderedFoods);
         return orderFoodDTOS;
     }
@@ -202,7 +203,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderItem orderedFood: orderedFoods
         ) {
             OrderFoodDTO orderFoodDTO= new OrderFoodDTO();
-            orderFoodDTO.setPrice(orderedFood.getPrice());
+            orderFoodDTO.setPrice(orderedFood.getMenuFood().getPrice()*orderedFood.getQuantity());
             orderFoodDTO.setQuantity(orderedFood.getQuantity());
             orderFoodDTO.setUnitPrice(orderedFood.getMenuFood().getPrice());
             orderFoodDTO.setName(orderedFood.getMenuFood().getFood().getName());
@@ -256,7 +257,7 @@ public class OrderServiceImpl implements OrderService {
         return payment;
     }
     private Payment getPayment(CustomerOrder updatedCustomerOrder) {
-        Optional<Payment> payment= paymentRepo.findByOrder(updatedCustomerOrder);
+        Optional<Payment> payment= paymentRepo.findByCustomerOrder(updatedCustomerOrder);
         return payment.get();
     }
 }

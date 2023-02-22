@@ -15,9 +15,9 @@ public class CustomerOrderDTO {
     private double totalPrice;
 
     private int totalItems;
-    private LocalDate orderDate;
+    private String orderDate;
 
-    private LocalTime orderTime;
+    private String orderTime;
 
     private String status;
 

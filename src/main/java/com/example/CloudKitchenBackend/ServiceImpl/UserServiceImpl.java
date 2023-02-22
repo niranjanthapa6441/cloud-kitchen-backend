@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
     }
     private UserDTO toUserDTO(User user) {
         return UserDTO.builder().
+                id(user.getId()).
                 role(user.getRole().getName()).
                 username(user.getUsername()).
                 firstName(user.getFirstName()).

@@ -21,13 +21,13 @@ import java.util.Optional;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
-    RestaurantRepo repo;
+    private RestaurantRepo repo;
 
     @Autowired
-    RestaurantAddressRepo addressRepo;
+    private RestaurantAddressRepo addressRepo;
 
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public RestaurantDTO save(RestaurantRequest request) {
@@ -47,25 +47,32 @@ public class RestaurantServiceImpl implements RestaurantService {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Restaurant> query = cb.createQuery(Restaurant.class);
         Root<Restaurant> restaurantRoot = query.from(Restaurant.class);
+
         Join<Restaurant, RestaurantAddress> addressJoin = restaurantRoot.join("address");
         query.select(restaurantRoot);
         List<Predicate> predicates = new ArrayList<>();
         if (restaurantName != null && ! restaurantName.isEmpty()) {
             predicates.add(cb.like(cb.lower(restaurantRoot.get("name")), "%" + restaurantName.toLowerCase() + "%"));
         }
+
         List<Order> orderList= new ArrayList<>();
         orderList.add(cb.asc(restaurantRoot.get("name")));
         query.orderBy(orderList);
+
         query.where(cb.and(predicates.toArray(new Predicate[0])));
         List<Restaurant> restaurants = entityManager.createQuery(query).getResultList();
+
         TypedQuery<Restaurant> typedQuery = entityManager.createQuery(query);
         typedQuery.setFirstResult((page - 1) * size);
         typedQuery.setMaxResults(size);
+
         int currentPage= page-1;
         List<Restaurant> pagedRestaurants = typedQuery.getResultList();
         int totalElements = restaurants.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
+
         RestaurantListDTO restaurantList = toRestaurantListDTO(pagedRestaurants,currentPage,totalElements,totalPages);
+
         return restaurantList;
     }
     @Override
@@ -130,5 +137,6 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     private void checkValidation(RestaurantRequest request) {
+
     }
 }

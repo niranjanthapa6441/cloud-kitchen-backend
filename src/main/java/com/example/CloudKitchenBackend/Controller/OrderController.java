@@ -2,6 +2,7 @@ package com.example.CloudKitchenBackend.Controller;
 
 
 import com.example.CloudKitchenBackend.Request.OrderRequest;
+import com.example.CloudKitchenBackend.Service.OrderService;
 import com.example.CloudKitchenBackend.ServiceImpl.OrderServiceImpl;
 import com.example.CloudKitchenBackend.Util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,12 @@ import javax.validation.Valid;
 @RequestMapping("/order")
 public class OrderController {
     @Autowired
-    private OrderServiceImpl service;
+    private OrderService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findAll(
             @RequestParam(required = false) String phoneNumber,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size
     ){
         return RestResponse.ok(service.findAll(phoneNumber, page, size),"Data Retrieval Successful");
@@ -43,11 +44,11 @@ public class OrderController {
     @GetMapping(value = "/customer/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findByCustomerId(
             @RequestParam String username,
-            @RequestParam String period,
-            @RequestParam String sortBy,
-            @RequestParam String startDate,
-            @RequestParam String endDate,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam (required = false)String period,
+            @RequestParam (required = false)String sortBy,
+            @RequestParam (required = false)String startDate,
+            @RequestParam (required = false)String endDate,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size
     ){
         return RestResponse.ok(service.findOrderByCustomer(username, period, sortBy, startDate, endDate, page, size),"Data Retrieval Successful");

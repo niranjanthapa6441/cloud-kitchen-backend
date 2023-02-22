@@ -6,6 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PaymentService {
-    PaymentListDTO findAll();
-    PaymentListDTO findPaymentByCustomer(String username,String period,String startDate,String endDate,String paymentMethod,String paymentPartner,int page, int size);
+    PaymentListDTO findAll(String username, String period, String startDate, String endDate, String paymentMethod, String paymentPartner, int page, int size);
 }

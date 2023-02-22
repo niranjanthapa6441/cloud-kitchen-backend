@@ -1,6 +1,7 @@
 package com.example.CloudKitchenBackend.Controller;
 
 import com.example.CloudKitchenBackend.Request.CategoryRequest;
+import com.example.CloudKitchenBackend.Service.CategoryService;
 import com.example.CloudKitchenBackend.ServiceImpl.CategoryServiceImpl;
 import com.example.CloudKitchenBackend.Util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
 public class CategoryController {
 
     @Autowired
-    private CategoryServiceImpl service;
+    private CategoryService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> categories(

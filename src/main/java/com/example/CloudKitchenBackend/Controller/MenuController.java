@@ -2,6 +2,7 @@ package com.example.CloudKitchenBackend.Controller;
 
 import com.example.CloudKitchenBackend.Request.MenuRequest;
 import com.example.CloudKitchenBackend.Request.OrderRequest;
+import com.example.CloudKitchenBackend.Service.MenuService;
 import com.example.CloudKitchenBackend.ServiceImpl.MenuServiceImpl;
 import com.example.CloudKitchenBackend.ServiceImpl.OrderServiceImpl;
 import com.example.CloudKitchenBackend.Util.RestResponse;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("/menu")
 public class MenuController {
     @Autowired
-    private MenuServiceImpl service;
+    private MenuService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findAll(
@@ -27,7 +28,7 @@ public class MenuController {
             @RequestParam(required = false) String meal,
             @RequestParam(defaultValue = "0.0") double rating,
             @RequestParam(required = false) String sortBy,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size
 
     ){

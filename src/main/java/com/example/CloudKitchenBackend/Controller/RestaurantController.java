@@ -2,6 +2,7 @@ package com.example.CloudKitchenBackend.Controller;
 
 import com.example.CloudKitchenBackend.Request.CategoryRequest;
 import com.example.CloudKitchenBackend.Request.RestaurantRequest;
+import com.example.CloudKitchenBackend.Service.RestaurantService;
 import com.example.CloudKitchenBackend.ServiceImpl.CategoryServiceImpl;
 import com.example.CloudKitchenBackend.ServiceImpl.RestaurantServiceImpl;
 import com.example.CloudKitchenBackend.Util.RestResponse;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("/restaurant")
 public class RestaurantController {
     @Autowired
-    private RestaurantServiceImpl service;
+    private RestaurantService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findALL(
