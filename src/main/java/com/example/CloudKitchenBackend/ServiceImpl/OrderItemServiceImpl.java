@@ -4,5 +4,5 @@ import com.example.CloudKitchenBackend.Service.OrderMenuFoodService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderMenuFoodServiceImpl implements OrderMenuFoodService {
+public class OrderItemServiceImpl implements OrderMenuFoodService {
 }

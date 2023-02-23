@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public CustomerOrderDTO update(String id) {
         Optional<CustomerOrder> findOrder= orderRepo.findById(id);
-        CustomerOrder updateCustomerOrder = toUpdateOrder(id, findOrder);
+        CustomerOrder updateCustomerOrder = toUpdateOrder(id, findOrder.get());
         CustomerOrder updatedCustomerOrder =orderRepo.save(updateCustomerOrder);
         Payment payment = getPayment(updatedCustomerOrder);
         if (payment.getPaymentMethod().toLowerCase().equals("offline"))
@@ -212,15 +212,9 @@ public class OrderServiceImpl implements OrderService {
         return orderFoodDTOS;
     }
 
-    private static CustomerOrder toUpdateOrder(String id, Optional<CustomerOrder> findOrder) {
-        CustomerOrder updateCustomerOrder = new CustomerOrder();
-        updateCustomerOrder.setId(id);
-        updateCustomerOrder.setCustomer(findOrder.get().getCustomer());
-        updateCustomerOrder.setOrderDate(findOrder.get().getOrderDate());
-        updateCustomerOrder.setOrderTime(findOrder.get().getOrderTime());
-        updateCustomerOrder.setStatus("DELIVERED");
-        updateCustomerOrder.setTotalItems(findOrder.get().getTotalItems());
-        return updateCustomerOrder;
+    private static CustomerOrder toUpdateOrder(String id, CustomerOrder updateOrder) {
+        updateOrder.setStatus("DELIVERED");
+        return updateOrder;
     }
     private void toPayment(OrderRequest request, CustomerOrder customerOrder) {
         if (request.getPaymentMethod().toLowerCase().equals("online"))

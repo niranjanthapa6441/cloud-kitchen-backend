@@ -62,7 +62,7 @@ public class MenuServiceImpl implements MenuService {
             predicates.add(cb.like(cb.lower(foodJoin.get("name")), "%" + foodName.toLowerCase() + "%"));
         }
         if (restaurantName != null && !restaurantName.isEmpty()) {
-            predicates.add(cb.equal(cb.lower(restaurantJoin.get("name")), restaurantName.toLowerCase()));
+            predicates.add(cb.like(cb.lower(restaurantJoin.get("name")),"%" + restaurantName.toLowerCase() + "%"));
         }
         if (category != null && !category.isEmpty()) {
             predicates.add(cb.equal(cb.lower(categoryJoin.get("category")), category.toLowerCase()));
