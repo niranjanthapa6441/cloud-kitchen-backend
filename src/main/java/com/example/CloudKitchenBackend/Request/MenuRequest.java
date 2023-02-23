@@ -1,10 +1,10 @@
 package com.example.CloudKitchenBackend.Request;
 
 import com.example.CloudKitchenBackend.Model.Restaurant;
-import jakarta.persistence.Column;
+
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Data
@@ -21,4 +21,19 @@ public class MenuRequest {
 
     @NotBlank(message = "Closing time should not be empty")
     private String closingTime;
+
+    @NotBlank(message = "Food Id should not be empty")
+    private int foodId;
+    @NotBlank(message = "Meal Id should not be empty")
+    private int mealId;
+    @NotBlank(message = "Category Id should not be empty")
+    private int categoryId;
+    @NotBlank(message = "Food Description should not be empty")
+    private String foodDescription;
+
+    @NotBlank(message = "Description should not be empty")
+    private double price;
+
+    @NotBlank(message = "Description should not be empty")
+    private double discountPercentage;
 }

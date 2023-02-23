@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -32,10 +32,10 @@ public class UserController {
     }
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> delete(@RequestParam int id){
-        return RestResponse.ok(service.delete(id),"Category deleted Successful");
+        return RestResponse.ok(service.delete(id),"User deleted Successful");
     }
     @PostMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@PathVariable int id,@Valid @RequestBody UserUpdateRequest request){
-        return RestResponse.ok(service.update(request, id),"Category updated Successful");
+        return RestResponse.ok(service.update(request, id),"User updated Successful");
     }
 }

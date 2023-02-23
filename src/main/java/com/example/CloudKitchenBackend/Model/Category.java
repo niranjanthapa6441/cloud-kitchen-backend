@@ -3,6 +3,7 @@ package com.example.CloudKitchenBackend.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+
 @Data
 @Entity
 @Table(name="category")

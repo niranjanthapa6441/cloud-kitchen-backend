@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface MenuService {
-    MenuDTO save(MenuRequest request);
-    MenuDTO delete(int id);
+    MenuFoodDTO save(MenuRequest request);
+    /*MenuDTO delete(int id);
 
     MenuListDTO findAll(String name, int page, int size);
 
     MenuDTO findById(int id);
 
-    MenuDTO update(MenuRequest request, int id);
+    MenuDTO update(MenuRequest request, int id)*/;
     MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String categoryName, String mealName, double rating, String sortBy, int page, int size);
 
 }
