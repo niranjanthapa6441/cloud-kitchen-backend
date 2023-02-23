@@ -1,7 +1,9 @@
 package com.example.CloudKitchenBackend.Controller;
 
+import com.example.CloudKitchenBackend.Request.MenuFoodRequest;
 import com.example.CloudKitchenBackend.Request.MenuRequest;
 import com.example.CloudKitchenBackend.Request.OrderRequest;
+import com.example.CloudKitchenBackend.Service.MenuFoodService;
 import com.example.CloudKitchenBackend.Service.MenuService;
 import com.example.CloudKitchenBackend.ServiceImpl.MenuServiceImpl;
 import com.example.CloudKitchenBackend.ServiceImpl.OrderServiceImpl;
@@ -19,6 +21,9 @@ import javax.validation.Valid;
 public class MenuController {
     @Autowired
     private MenuService service;
+
+    @Autowired
+    private MenuFoodService menuFoodService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findAll(
@@ -38,20 +43,20 @@ public class MenuController {
     public ResponseEntity<Object> save(
             @Valid @RequestBody MenuRequest request
     ){
-        return RestResponse.ok(service.save(request),"Order Saved Successful");
+        return RestResponse.ok(service.save(request),"Menu Saved Successful");
     }
-    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> delete(@RequestParam int id){
-        return RestResponse.ok(service.delete(id),"Order cancelled Successful");
+    @DeleteMapping(value = "menuFood/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> delete(@RequestParam String id){
+        return RestResponse.ok(menuFoodService.delete(id),"Menu cancelled Successful");
     }
-    @PostMapping(value ="/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> update(@PathVariable int id, @Valid @RequestBody MenuRequest request){
-        return RestResponse.ok(service.update(request,id),"Order updated Successful");
+    @PostMapping(value ="menuFood/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> update(@PathVariable String id, @Valid @RequestBody MenuFoodRequest request){
+        return RestResponse.ok(menuFoodService.update(request,id),"Menu updated Successful");
     }
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "menuFood/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findById(
-            @PathVariable int id
+            @PathVariable String id
     ){
-        return RestResponse.ok(service.findById(id),"Data Retrieval Successful");
+        return RestResponse.ok(menuFoodService.findById(id),"Menu Retrieval Successful");
     }
 }

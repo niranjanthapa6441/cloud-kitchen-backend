@@ -20,17 +20,17 @@ public class MenuFoodServiceImpl implements MenuFoodService {
     }
 
     @Override
-    public MenuFoodDTO delete(int id) {
+    public MenuFoodDTO delete(String id) {
         return null;
     }
 
     @Override
-    public MenuFoodDTO findById(int id) {
+    public MenuFoodDTO findById(String id) {
         return null;
     }
 
     @Override
-    public MenuFoodDTO update(MenuFoodRequest request, int id) {
+    public MenuFoodDTO update(MenuFoodRequest request, String id) {
         return null;
     }
 }

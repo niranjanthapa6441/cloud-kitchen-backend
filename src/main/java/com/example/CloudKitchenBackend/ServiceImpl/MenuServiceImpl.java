@@ -3,10 +3,11 @@ package com.example.CloudKitchenBackend.ServiceImpl;
 import com.example.CloudKitchenBackend.DTO.MenuDTO;
 import com.example.CloudKitchenBackend.DTO.MenuFoodDTO;
 import com.example.CloudKitchenBackend.DTO.MenuFoodListDTO;
-import com.example.CloudKitchenBackend.DTO.MenuListDTO;
 import com.example.CloudKitchenBackend.Model.*;
+import com.example.CloudKitchenBackend.Repositories.*;
 import com.example.CloudKitchenBackend.Request.MenuRequest;
 import com.example.CloudKitchenBackend.Service.MenuService;
+import com.example.CloudKitchenBackend.Util.Formatter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
@@ -16,37 +17,107 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MenuServiceImpl implements MenuService {
+
+    @Autowired
+    private MenuRepo menuRepo;
+
+    @Autowired
+    private MenuFoodRepo menuFoodRepo;
+
+    @Autowired
+    private MealRepo mealRepo;
+
+    @Autowired
+    private FoodRepo foodRepo;
+
+    @Autowired
+    private CategoryRepo categoryRepo;
+
+    @Autowired
+    private RestaurantRepo restaurantRepo;
     @Autowired
     private EntityManager entityManager;
 
     @Override
-    public MenuDTO save(MenuRequest request) {
-        return null;
+    public MenuFoodDTO save(MenuRequest request) {
+        validate(request);
+        Optional<Restaurant> findRestaurant= restaurantRepo.findById(request.getRestaurantId());
+        Restaurant restaurant= new Restaurant();
+        if (findRestaurant.isPresent())
+            restaurant= findRestaurant.get();
+        Menu menu= menuRepo.save(toMenu(request,restaurant));
+        Meal meal= findMeal(request);
+        Category category= new Category();
+        Optional<Category> findCategory= categoryRepo.findById(request.getCategoryId());
+        if (findCategory.isPresent())
+            category= findCategory.get();
+        Food food= new Food();
+        Optional<Food> findFood= foodRepo.findById(request.getFoodId());
+        if (findFood.isPresent())
+            food=findFood.get();
+        validateMenuFood(category,menu,meal,food);
+        MenuFood menuFood= menuFoodRepo.save(toMenuFood(request,meal,food,category,menu));
+        return toMenuFoodDTO(menuFood);
     }
 
-    @Override
-    public MenuDTO delete(int id) {
-        return null;
+    private MenuFood toMenuFood(MenuRequest request, Meal meal, Food food, Category category, Menu menu) {
+        MenuFood menuFood= new MenuFood();
+        menuFood.setMenu(menu);
+        menuFood.setMeal(meal);
+        menuFood.setFood(food);
+        menuFood.setCategory(category);
+        menuFood.setDescription(request.getFoodDescription());
+        menuFood.setDiscountPercentage(request.getDiscountPercentage());
+        menuFood.setRating(0.0);
+        return menuFood;
     }
 
-    @Override
-    public MenuListDTO findAll(String name, int page, int size) {
-        return null;
+    private void validateMenuFood(Category category, Menu menu, Meal meal, Food food) {
     }
 
-    @Override
-    public MenuDTO findById(int id) {
-        return null;
+    private Meal findMeal(MenuRequest request) {
+        Meal meal= new Meal();
+        Optional<Meal> findMeal= mealRepo.findById(request.getMealId());
+        if (findMeal.isPresent())
+            meal=findMeal.get();
+        return meal;
     }
 
-    @Override
-    public MenuDTO update(MenuRequest request, int id) {
-        return null;
+    private Menu toMenu(MenuRequest request,Restaurant restaurant) {
+        Menu menu= new Menu();
+        menu.setRestaurant(restaurant);
+        menu.setDescription(request.getDescription());
+        menu.setClosingTime(Formatter.getTimeFromString(request.getClosingTime()));
+        menu.setOpeningTime(Formatter.getTimeFromString(request.getOpeningTime()));
+        return menu;
     }
 
+    private void validate(MenuRequest request) {
+    }
+
+    /* @Override
+     public MenuDTO delete(int id) {
+         return null;
+     }
+
+     @Override
+     public MenuListDTO findAll(String name, int page, int size) {
+         return null;
+     }
+
+     @Override
+     public MenuDTO findById(int id) {
+         return null;
+     }
+     @Override
+     public MenuDTO update(MenuRequest request, int id) {
+         return null;
+     }
+ */
     public MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MenuFood> query = cb.createQuery(MenuFood.class);
@@ -95,7 +166,17 @@ public class MenuServiceImpl implements MenuService {
         List<MenuFood> menuFoods = typedQuery.getResultList();
         int totalElements = foods.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
-        return toMenuFoodListDTO(toMenuFoodDTO(menuFoods),currentPage,totalPages,totalElements);
+        List<MenuFoodDTO> menuFoodDTOS = getFoodDTOList(menuFoods);
+        return toMenuFoodListDTO(menuFoodDTOS,currentPage,totalPages,totalElements);
+    }
+
+    private List<MenuFoodDTO> getFoodDTOList(List<MenuFood> menuFoods) {
+        List<MenuFoodDTO> menuFoodDTOS= new ArrayList<>();
+        for (MenuFood menuFood: menuFoods
+             ) {
+            menuFoodDTOS.add(toMenuFoodDTO(menuFood));
+        }
+        return menuFoodDTOS;
     }
 
     private MenuFoodListDTO toMenuFoodListDTO(List<MenuFoodDTO> menuFoods, int currentPage, int totalPages, long totalElements) {
@@ -107,20 +188,16 @@ public class MenuServiceImpl implements MenuService {
                 .build();
     }
 
-    private List<MenuFoodDTO> toMenuFoodDTO(List<MenuFood> menuFoods) {
-        List<MenuFoodDTO> menuFoodDTOS = new ArrayList<>();
-        for (MenuFood menuFood : menuFoods) {
-            MenuFoodDTO menuFoodDTO = MenuFoodDTO.builder()
-                    .name(menuFood.getFood().getName())
-                    .description(menuFood.getDescription())
-                    .restaurantName(menuFood.getMenu().getRestaurant().getName())
-                    .category(menuFood.getCategory().getCategory())
-                    .Meal(menuFood.getMeal().getMeal())
-                    .price(menuFood.getPrice())
-                    .rating(menuFood.getRating())
-                    .build();
-            menuFoodDTOS.add(menuFoodDTO);
-        }
-        return menuFoodDTOS;
+    private MenuFoodDTO toMenuFoodDTO(MenuFood menuFood) {
+        return MenuFoodDTO.builder()
+                .name(menuFood.getFood().getName())
+                .description(menuFood.getDescription())
+                .restaurantName(menuFood.getMenu().getRestaurant().getName())
+                .category(menuFood.getCategory().getCategory())
+                .Meal(menuFood.getMeal().getMeal())
+                .price(menuFood.getPrice())
+                .rating(menuFood.getRating())
+                .discountPrice(menuFood.getPrice()* menuFood.getDiscountPercentage()/100)
+                .build();
     }
 }

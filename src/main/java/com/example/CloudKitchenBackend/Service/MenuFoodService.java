@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MenuFoodService {
     MenuFoodDTO save(MenuFoodRequest request);
-    MenuFoodDTO delete(int id);
-    MenuFoodDTO findById(int id);
+    MenuFoodDTO delete(String id);
+    MenuFoodDTO findById(String id);
 
-    MenuFoodDTO update(MenuFoodRequest request, int id);
+    MenuFoodDTO update(MenuFoodRequest request, String id);
 }

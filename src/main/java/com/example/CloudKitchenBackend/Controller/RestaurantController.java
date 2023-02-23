@@ -35,14 +35,14 @@ public class RestaurantController {
     public ResponseEntity<Object> save(
             @Valid @RequestBody RestaurantRequest request
     ){
-        return RestResponse.ok(service.save(request),"Category Saved Successful");
+        return RestResponse.ok(service.save(request),"Restaurant Saved Successful");
     }
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> delete(@RequestParam String id){
-        return RestResponse.ok(service.delete(id),"Category deleted Successful");
+        return RestResponse.ok(service.delete(id),"Restaurant deleted Successful");
     }
     @PostMapping(value ="/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@PathVariable String id, @RequestBody RestaurantRequest request){
-        return RestResponse.ok(service.update(request, id),"Category updated Successful");
+        return RestResponse.ok(service.update(request, id),"Restaurant updated Successful");
     }
 }
