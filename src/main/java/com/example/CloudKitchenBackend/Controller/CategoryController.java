@@ -2,14 +2,13 @@ package com.example.CloudKitchenBackend.Controller;
 
 import com.example.CloudKitchenBackend.Request.CategoryRequest;
 import com.example.CloudKitchenBackend.Service.CategoryService;
-import com.example.CloudKitchenBackend.ServiceImpl.CategoryServiceImpl;
 import com.example.CloudKitchenBackend.Util.RestResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/category")

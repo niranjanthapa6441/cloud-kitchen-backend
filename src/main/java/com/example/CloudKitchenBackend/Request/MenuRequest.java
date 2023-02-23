@@ -1,10 +1,10 @@
 package com.example.CloudKitchenBackend.Request;
 
 import com.example.CloudKitchenBackend.Model.Restaurant;
-import jakarta.persistence.Column;
+
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Data

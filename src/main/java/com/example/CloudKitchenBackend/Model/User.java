@@ -3,7 +3,6 @@ package com.example.CloudKitchenBackend.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Data
