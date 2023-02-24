@@ -14,7 +14,17 @@ import jakarta.persistence.criteria.*;
 import jakarta.persistence.criteria.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,25 +53,19 @@ public class MenuServiceImpl implements MenuService {
     private EntityManager entityManager;
 
     @Override
-    public MenuFoodDTO save(MenuRequest request) {
+    public String save(MenuRequest request) {
         validate(request);
         Optional<Restaurant> findRestaurant= restaurantRepo.findById(request.getRestaurantId());
         Restaurant restaurant= new Restaurant();
         if (findRestaurant.isPresent())
             restaurant= findRestaurant.get();
-        Menu menu= menuRepo.save(toMenu(request,restaurant));
-        Meal meal= findMeal(request);
-        Category category= new Category();
-        Optional<Category> findCategory= categoryRepo.findById(request.getCategoryId());
-        if (findCategory.isPresent())
-            category= findCategory.get();
-        Food food= new Food();
-        Optional<Food> findFood= foodRepo.findById(request.getFoodId());
-        if (findFood.isPresent())
-            food=findFood.get();
-        validateMenuFood(category,menu,meal,food);
-        MenuFood menuFood= menuFoodRepo.save(toMenuFood(request,meal,food,category,menu));
-        return toMenuFoodDTO(menuFood);
+        menuRepo.save(toMenu(request,restaurant));
+        return "Saved Successfully";
+    }
+
+    @Override
+    public MenuDTO update(MenuRequest request, int id) {
+        return null;
     }
 
     private MenuFood toMenuFood(MenuRequest request, Meal meal, Food food, Category category, Menu menu) {
@@ -76,16 +80,6 @@ public class MenuServiceImpl implements MenuService {
         return menuFood;
     }
 
-    private void validateMenuFood(Category category, Menu menu, Meal meal, Food food) {
-    }
-
-    private Meal findMeal(MenuRequest request) {
-        Meal meal= new Meal();
-        Optional<Meal> findMeal= mealRepo.findById(request.getMealId());
-        if (findMeal.isPresent())
-            meal=findMeal.get();
-        return meal;
-    }
 
     private Menu toMenu(MenuRequest request,Restaurant restaurant) {
         Menu menu= new Menu();
@@ -99,25 +93,6 @@ public class MenuServiceImpl implements MenuService {
     private void validate(MenuRequest request) {
     }
 
-    /* @Override
-     public MenuDTO delete(int id) {
-         return null;
-     }
-
-     @Override
-     public MenuListDTO findAll(String name, int page, int size) {
-         return null;
-     }
-
-     @Override
-     public MenuDTO findById(int id) {
-         return null;
-     }
-     @Override
-     public MenuDTO update(MenuRequest request, int id) {
-         return null;
-     }
- */
     public MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MenuFood> query = cb.createQuery(MenuFood.class);

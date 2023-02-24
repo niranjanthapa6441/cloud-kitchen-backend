@@ -24,4 +24,8 @@ public class MenuFoodRequest {
 
     @NotBlank(message = "Description should not be empty")
     private double discountPercentage;
+
+    private String imagePath;
+
+    private String image;
 }

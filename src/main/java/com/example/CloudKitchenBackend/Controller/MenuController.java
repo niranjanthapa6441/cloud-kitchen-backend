@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/menu")
@@ -43,7 +44,7 @@ public class MenuController {
     public ResponseEntity<Object> save(
             @Valid @RequestBody MenuRequest request
     ){
-        return RestResponse.ok(service.save(request),"Menu Saved Successful");
+        return RestResponse.ok( service.save(request));
     }
     @DeleteMapping(value = "menuFood/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> delete(@RequestParam String id){

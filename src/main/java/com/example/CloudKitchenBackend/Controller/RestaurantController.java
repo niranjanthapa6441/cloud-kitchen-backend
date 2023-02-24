@@ -1,10 +1,7 @@
 package com.example.CloudKitchenBackend.Controller;
 
-import com.example.CloudKitchenBackend.Request.CategoryRequest;
 import com.example.CloudKitchenBackend.Request.RestaurantRequest;
 import com.example.CloudKitchenBackend.Service.RestaurantService;
-import com.example.CloudKitchenBackend.ServiceImpl.CategoryServiceImpl;
-import com.example.CloudKitchenBackend.ServiceImpl.RestaurantServiceImpl;
 import com.example.CloudKitchenBackend.Util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
