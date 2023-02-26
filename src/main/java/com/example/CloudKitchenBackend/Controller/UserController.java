@@ -19,10 +19,10 @@ public class UserController {
     private UserService service;
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findAll(
-            @RequestParam String phoneNumber,
-            @RequestParam String role,
-            @RequestParam int page,
-            @RequestParam int size
+            @RequestParam(required = false) String phoneNumber,
+            @RequestParam(required = false) String role,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
     ){
         return RestResponse.ok(service.users(phoneNumber, role, page, size),"App User List");
     }

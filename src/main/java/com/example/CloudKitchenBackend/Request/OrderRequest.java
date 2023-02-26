@@ -12,12 +12,9 @@ public class OrderRequest {
     @NotBlank(message = "Username should not be empty")
     private String username;
 
-    @NotBlank(message="Order food should Not be empty")
     List<OrderFoodRequest> foods;
-    @NotBlank(message="totalItems should Not be empty")
     private int totalItems;
 
-    @NotBlank(message="TotalPrice should Not be empty")
     private double totalPrice;
 
     @NotBlank(message="Payment Partner should Not be empty")

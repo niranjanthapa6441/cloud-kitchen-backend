@@ -43,6 +43,6 @@ public class MenuFood {
 
     @Column(name = "image_path",nullable = false)
     private String imagePath;
-    @Column(name = "image_name",nullable = false)
+    @Column(name = "image",nullable = false)
     private String image;
 }

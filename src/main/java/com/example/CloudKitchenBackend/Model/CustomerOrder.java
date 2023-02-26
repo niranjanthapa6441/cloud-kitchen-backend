@@ -18,7 +18,7 @@ public class CustomerOrder {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User customer;
     @Column(nullable = false,name = "total_items")
     private int totalItems;

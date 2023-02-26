@@ -79,6 +79,7 @@ public class MenuFoodServiceImpl implements MenuFoodService {
         menuFood.setMeal(meal);
         menuFood.setFood(food);
         menuFood.setCategory(category);
+        menuFood.setPrice(request.getPrice());
         menuFood.setDescription(request.getDescription());
         menuFood.setDiscountPercentage(request.getDiscountPercentage());
         menuFood.setImagePath(request.getImagePath());

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class MenuFoodDTO {
+    private String menuFoodId;
     private String name;
     private String description;
 

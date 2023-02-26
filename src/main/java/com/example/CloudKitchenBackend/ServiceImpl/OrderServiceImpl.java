@@ -1,7 +1,6 @@
 package com.example.CloudKitchenBackend.ServiceImpl;
 
 import com.example.CloudKitchenBackend.DTO.CustomerOrderDTO;
-import com.example.CloudKitchenBackend.DTO.CustomerOrderListDTO;
 import com.example.CloudKitchenBackend.DTO.OrderFoodDTO;
 import com.example.CloudKitchenBackend.Model.*;
 import com.example.CloudKitchenBackend.Model.CustomerOrder;
@@ -9,6 +8,7 @@ import com.example.CloudKitchenBackend.Repositories.*;
 import com.example.CloudKitchenBackend.Request.OrderFoodRequest;
 import com.example.CloudKitchenBackend.Request.OrderRequest;
 import com.example.CloudKitchenBackend.Service.OrderService;
+import com.example.CloudKitchenBackend.Util.CustomException;
 import com.example.CloudKitchenBackend.Util.Formatter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -16,7 +16,6 @@ import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -53,6 +52,8 @@ public class OrderServiceImpl implements OrderService {
         User user = null;
         if(findUser.isPresent())
             user=findUser.get();
+        else
+            throw new NullPointerException("User not found");
         CustomerOrder customerOrder = orderRepo.save(toOrder(request,user));
         toOrderItem(request, customerOrder);
         toPayment(request, customerOrder);
@@ -148,13 +149,16 @@ public class OrderServiceImpl implements OrderService {
         return orderMenuFood;
     }
     private OrderItem toOrderMenuFood(OrderFoodRequest foodRequest, CustomerOrder customerOrder) {
-        Optional<Menu> menu=menuRepo.findById(foodRequest.getMenuId());
-        Optional<Food> food=foodRepo.findById(foodRequest.getFoodId());
-        MenuFood findMenuFood= menuFoodRepo.findMenuFoodByMenuAndFood(menu.get(),food.get());
+        Optional<MenuFood> findMenuFood= menuFoodRepo.findById(foodRequest.getMenuFoodId());
+        MenuFood menuFood= new MenuFood();
+        if (findMenuFood.isPresent())
+            menuFood=findMenuFood.get();
+        else
+            throw new NullPointerException("Invalid MenuFoodId has been provided");
         OrderItem orderMenuFood= new OrderItem();
         orderMenuFood.setCustomerOrder(customerOrder);
         orderMenuFood.setQuantity(foodRequest.getQuantity());
-        orderMenuFood.setMenuFood(findMenuFood);
+        orderMenuFood.setMenuFood(menuFood);
         return orderMenuFood;
     }
 
@@ -229,6 +233,7 @@ public class OrderServiceImpl implements OrderService {
         payment.setCustomerOrder(customerOrder);
         payment.setPaymentDate(LocalDate.now());
         payment.setPaymentTime(LocalTime.now());
+        payment.setPaidAmount(request.getTotalPrice());
         payment.setPaymentPartner(request.getPaymentPartner());
         payment.setPaymentMethod(request.getPaymentMethod());
         payment.setStatus("PAID");

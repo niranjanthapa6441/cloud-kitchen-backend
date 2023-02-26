@@ -139,6 +139,7 @@ public class MenuServiceImpl implements MenuService {
 
     private MenuFoodDTO toMenuFoodDTO(MenuFood menuFood) {
         return MenuFoodDTO.builder()
+                .menuFoodId(menuFood.getId())
                 .name(menuFood.getFood().getName())
                 .description(menuFood.getDescription())
                 .restaurantName(menuFood.getMenu().getRestaurant().getName())

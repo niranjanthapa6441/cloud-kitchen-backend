@@ -4,12 +4,7 @@ import lombok.Data;
 
 @Data
 public class OrderFoodRequest {
-    private int menuId;
-    private int foodId;
-
-    private String foodName;
+    private String menuFoodId;
 
     private int quantity;
-
-    private double price;
 }
