@@ -24,7 +24,10 @@ public class CustomException extends RuntimeException {
 
         PHONE_NUMBER_ALREADY_EXISTS("Phone Number already exists",500),
         EMAIL_ALREADY_EXITS("Email Already Exists", 500),
-        USERNAME_ALREADY_EXIST("Username already Exists", 500);
+        USERNAME_ALREADY_EXIST("Username already Exists", 500),
+        INVALID_FILE_EXTENSION("Image Extension Should be of .png, .jpeg or .jpg",400 ),
+        INVALID_MIME_TYPE("Invalid MIMEType",400),
+        INVALID_FILE_SIZE("Upload file fize shouldn't be more than 3MB",400 );
         private String message;
         private int code;
 

@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -20,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class MenuFoodController {
     @Autowired
     MenuFoodService service;
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> save(
-            @Valid @RequestBody MenuFoodRequest request, @RequestParam("imageFile") MultipartFile multipartFile
+            @Valid @RequestPart MenuFoodRequest request, @RequestPart("image") MultipartFile multipartFile
     ){
         return RestResponse.ok(service.save(request,multipartFile));
     }
