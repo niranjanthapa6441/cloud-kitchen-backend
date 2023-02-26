@@ -10,6 +10,7 @@ import java.io.StringReader;
 public class RestResponse {
     public String code;
     public String message;
+
     public Object data;
 
     public RestResponse() {
@@ -38,8 +39,8 @@ public class RestResponse {
 
 
     public static ResponseEntity<Object> ok(Object data, String msg ) {
-        Object data1 = HelperUtil.checkAndCorrectNullValueOfObject(data);
-        return new ResponseEntity<>((new RestResponse("200", msg, data1)), HttpStatus.OK);
+        //Object data1 = HelperUtil.checkAndCorrectNullValueOfObject(data);
+        return new ResponseEntity<>((new RestResponse("200", msg, data)), HttpStatus.OK);
     }
 
     public static JsonObject toJson(Object data) {

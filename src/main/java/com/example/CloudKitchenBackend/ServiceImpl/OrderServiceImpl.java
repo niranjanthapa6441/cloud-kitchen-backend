@@ -16,10 +16,12 @@ import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,12 +76,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public CustomerOrderListDTO findAll(String phoneNumber, int page, int size) {
+    public HashMap<String,Object> findAll(String phoneNumber, int page, int size) {
         return null;
     }
 
     @Override
-    public CustomerOrderListDTO findOrderByCustomer(String username,String period,String sortBy,String startDate,String endDate, int page, int size) {
+    public HashMap<String,Object> findOrderByCustomer(String username, String period, String sortBy, String startDate, String endDate, int page, int size) {
         CriteriaBuilder cb= entityManager.getCriteriaBuilder();
         CriteriaQuery<CustomerOrder> query = cb.createQuery(CustomerOrder.class);
 
@@ -178,18 +180,18 @@ public class OrderServiceImpl implements OrderService {
                 .orderFoods(orderFoodDTOS)
                 .build();
     }
-    private CustomerOrderListDTO toCustomerOrderListDTO(List<CustomerOrder> orders, int number, long totalElements, int totalPages) {
+    private HashMap<String, Object> toCustomerOrderListDTO(List<CustomerOrder> orders, int number, long totalElements, int totalPages) {
         List<CustomerOrderDTO> customerOrders= new ArrayList<>();
         for (CustomerOrder customerOrder :orders
         ) {
             customerOrders.add(toCustomerOrderDTO(customerOrder, getOrderFoods(customerOrder)));
         }
-        return CustomerOrderListDTO.builder().
-                orders(customerOrders).
-                currentPage(number).
-                totalElements(totalElements).
-                totalPages(totalPages).
-                build();
+        HashMap<String,Object> response= new HashMap<>();
+        response.put("orders",customerOrders);
+        response.put("currentPage",number);
+        response.put("totalElements",totalElements);
+        response.put("totalPages",totalPages);
+        return  response;
     }
 
     private List<OrderFoodDTO> getOrderFoods(CustomerOrder customerOrder) {

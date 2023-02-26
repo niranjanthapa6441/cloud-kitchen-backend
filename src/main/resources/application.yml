@@ -1,3 +1,5 @@
+file:
+  upload-dir: images/restaurants/
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/cloudkitchen
@@ -12,7 +14,11 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
     show-sql: false
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
 server:
   servlet:
-    context-path: /cloudkitchen/api/v1
+    context-path: /cloudKitchen/api/v1
   port: 8080

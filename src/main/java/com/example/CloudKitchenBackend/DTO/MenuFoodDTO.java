@@ -24,4 +24,7 @@ public class MenuFoodDTO {
     private double price;
 
     private double discountPrice;
+
+    private String imagePath;
+
 }

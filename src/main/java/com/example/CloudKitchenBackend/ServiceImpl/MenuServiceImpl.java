@@ -43,52 +43,23 @@ public class MenuServiceImpl implements MenuService {
     private EntityManager entityManager;
 
     @Override
-    public MenuFoodDTO save(MenuRequest request) {
+    public String save(MenuRequest request) {
         validate(request);
-        Optional<Restaurant> findRestaurant= restaurantRepo.findById(request.getRestaurantId());
-        Restaurant restaurant= new Restaurant();
+        Optional<Restaurant> findRestaurant = restaurantRepo.findById(request.getRestaurantId());
+        Restaurant restaurant = new Restaurant();
         if (findRestaurant.isPresent())
-            restaurant= findRestaurant.get();
-        Menu menu= menuRepo.save(toMenu(request,restaurant));
-        Meal meal= findMeal(request);
-        Category category= new Category();
-        Optional<Category> findCategory= categoryRepo.findById(request.getCategoryId());
-        if (findCategory.isPresent())
-            category= findCategory.get();
-        Food food= new Food();
-        Optional<Food> findFood= foodRepo.findById(request.getFoodId());
-        if (findFood.isPresent())
-            food=findFood.get();
-        validateMenuFood(category,menu,meal,food);
-        MenuFood menuFood= menuFoodRepo.save(toMenuFood(request,meal,food,category,menu));
-        return toMenuFoodDTO(menuFood);
+            restaurant = findRestaurant.get();
+        menuRepo.save(toMenu(request, restaurant));
+        return "Saved Successfully";
     }
 
-    private MenuFood toMenuFood(MenuRequest request, Meal meal, Food food, Category category, Menu menu) {
-        MenuFood menuFood= new MenuFood();
-        menuFood.setMenu(menu);
-        menuFood.setMeal(meal);
-        menuFood.setFood(food);
-        menuFood.setCategory(category);
-        menuFood.setDescription(request.getFoodDescription());
-        menuFood.setDiscountPercentage(request.getDiscountPercentage());
-        menuFood.setRating(0.0);
-        return menuFood;
+    @Override
+    public MenuDTO update(MenuRequest request, int id) {
+        return null;
     }
 
-    private void validateMenuFood(Category category, Menu menu, Meal meal, Food food) {
-    }
-
-    private Meal findMeal(MenuRequest request) {
-        Meal meal= new Meal();
-        Optional<Meal> findMeal= mealRepo.findById(request.getMealId());
-        if (findMeal.isPresent())
-            meal=findMeal.get();
-        return meal;
-    }
-
-    private Menu toMenu(MenuRequest request,Restaurant restaurant) {
-        Menu menu= new Menu();
+    private Menu toMenu(MenuRequest request, Restaurant restaurant) {
+        Menu menu = new Menu();
         menu.setRestaurant(restaurant);
         menu.setDescription(request.getDescription());
         menu.setClosingTime(Formatter.getTimeFromString(request.getClosingTime()));
@@ -96,28 +67,6 @@ public class MenuServiceImpl implements MenuService {
         return menu;
     }
 
-    private void validate(MenuRequest request) {
-    }
-
-    /* @Override
-     public MenuDTO delete(int id) {
-         return null;
-     }
-
-     @Override
-     public MenuListDTO findAll(String name, int page, int size) {
-         return null;
-     }
-
-     @Override
-     public MenuDTO findById(int id) {
-         return null;
-     }
-     @Override
-     public MenuDTO update(MenuRequest request, int id) {
-         return null;
-     }
- */
     public MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MenuFood> query = cb.createQuery(MenuFood.class);
@@ -133,13 +82,13 @@ public class MenuServiceImpl implements MenuService {
             predicates.add(cb.like(cb.lower(foodJoin.get("name")), "%" + foodName.toLowerCase() + "%"));
         }
         if (restaurantName != null && !restaurantName.isEmpty()) {
-            predicates.add(cb.like(cb.lower(restaurantJoin.get("name")),"%" + restaurantName.toLowerCase() + "%"));
+            predicates.add(cb.like(cb.lower(restaurantJoin.get("name")), "%" + restaurantName.toLowerCase() + "%"));
         }
         if (category != null && !category.isEmpty()) {
             predicates.add(cb.equal(cb.lower(categoryJoin.get("category")), category.toLowerCase()));
         }
         if (mealName != null && !mealName.isEmpty()) {
-            predicates.add(cb.equal(cb.lower(mealJoin.get("meal")),mealName.toLowerCase()));
+            predicates.add(cb.equal(cb.lower(mealJoin.get("meal")), mealName.toLowerCase()));
         }
         if (rating != 0.0) {
             predicates.add(cb.greaterThanOrEqualTo(menuFoodRoot.get("rating"), rating));
@@ -152,7 +101,7 @@ public class MenuServiceImpl implements MenuService {
             }
         }
 
-        List<Order> orderList= new ArrayList<>();
+        List<Order> orderList = new ArrayList<>();
         orderList.add(cb.asc(foodJoin.get("name")));
         query.orderBy(orderList);
         Predicate[] predicateArr = new Predicate[predicates.size()];
@@ -162,18 +111,18 @@ public class MenuServiceImpl implements MenuService {
         TypedQuery<MenuFood> typedQuery = entityManager.createQuery(query);
         typedQuery.setFirstResult((page - 1) * size);
         typedQuery.setMaxResults(size);
-        int currentPage= page-1;
+        int currentPage = page - 1;
         List<MenuFood> menuFoods = typedQuery.getResultList();
         int totalElements = foods.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
         List<MenuFoodDTO> menuFoodDTOS = getFoodDTOList(menuFoods);
-        return toMenuFoodListDTO(menuFoodDTOS,currentPage,totalPages,totalElements);
+        return toMenuFoodListDTO(menuFoodDTOS, currentPage, totalPages, totalElements);
     }
 
     private List<MenuFoodDTO> getFoodDTOList(List<MenuFood> menuFoods) {
-        List<MenuFoodDTO> menuFoodDTOS= new ArrayList<>();
-        for (MenuFood menuFood: menuFoods
-             ) {
+        List<MenuFoodDTO> menuFoodDTOS = new ArrayList<>();
+        for (MenuFood menuFood : menuFoods
+        ) {
             menuFoodDTOS.add(toMenuFoodDTO(menuFood));
         }
         return menuFoodDTOS;
@@ -197,7 +146,11 @@ public class MenuServiceImpl implements MenuService {
                 .Meal(menuFood.getMeal().getMeal())
                 .price(menuFood.getPrice())
                 .rating(menuFood.getRating())
-                .discountPrice(menuFood.getPrice()* menuFood.getDiscountPercentage()/100)
+                .discountPrice(menuFood.getPrice() * menuFood.getDiscountPercentage() / 100)
+                .imagePath(menuFood.getImagePath())
                 .build();
+    }
+
+    private void validate(MenuRequest request) {
     }
 }
