@@ -5,6 +5,8 @@ import com.example.CloudKitchenBackend.DTO.CustomerOrderListDTO;
 import com.example.CloudKitchenBackend.Request.OrderRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public interface OrderService {
     CustomerOrderDTO save(OrderRequest request);
@@ -12,7 +14,7 @@ public interface OrderService {
 
     CustomerOrderDTO cancel(String id);
 
-    CustomerOrderListDTO findAll(String phoneNumber, int page, int size);
-    CustomerOrderListDTO findOrderByCustomer(String username,String period,String sortBy,String startDate, String endDate,int page, int size);
+    HashMap<String,Object> findAll(String phoneNumber, int page, int size);
+    HashMap<String,Object> findOrderByCustomer(String username, String period, String sortBy, String startDate, String endDate, int page, int size);
 
 }

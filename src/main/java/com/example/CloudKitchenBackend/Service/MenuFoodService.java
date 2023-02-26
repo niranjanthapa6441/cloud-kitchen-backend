@@ -5,10 +5,11 @@ import com.example.CloudKitchenBackend.DTO.MenuFoodListDTO;
 import com.example.CloudKitchenBackend.Model.MenuFood;
 import com.example.CloudKitchenBackend.Request.MenuFoodRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface MenuFoodService {
-    MenuFoodDTO save(MenuFoodRequest request);
+    String save(MenuFoodRequest request, MultipartFile multipartFile);
     MenuFoodDTO delete(String id);
     MenuFoodDTO findById(String id);
 

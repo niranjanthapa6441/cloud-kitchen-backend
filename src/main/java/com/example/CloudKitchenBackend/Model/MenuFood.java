@@ -40,4 +40,9 @@ public class MenuFood {
     private double discountPercentage;
 
     private double rating;
+
+    @Column(name = "image_path",nullable = false)
+    private String imagePath;
+    @Column(name = "image_name",nullable = false)
+    private String image;
 }
