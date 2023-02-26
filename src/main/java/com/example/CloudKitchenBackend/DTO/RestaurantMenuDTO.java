@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @Builder
 public class RestaurantMenuDTO {
-    List<RestaurantMenu> menus;
-    List<Category> categories;
+    List<MenuFoodDTO> menus;
+    List<String> categories;
     private int currentPage;
 
     private long totalElements;

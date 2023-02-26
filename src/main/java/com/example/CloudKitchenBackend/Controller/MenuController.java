@@ -40,6 +40,20 @@ public class MenuController {
     ){
         return RestResponse.ok(service.searchMenuFoods(foodName,restaurantName,category,meal, rating,sortBy,page,size),"Data Retrieval Successful");
     }
+    @GetMapping(value = "/restaurant/{restaurantId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> menuByRestaurant(
+            @RequestParam(required = false) String foodName,
+            @PathVariable String restaurantId,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String meal,
+            @RequestParam(defaultValue = "0.0") double rating,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "5") int size
+
+    ){
+        return RestResponse.ok(service.restaurantMenu(foodName,restaurantId,category,meal, rating,sortBy,page,size),"Data Retrieval Successful");
+    }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(
             @Valid @RequestBody MenuRequest request

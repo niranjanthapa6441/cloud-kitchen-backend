@@ -17,11 +17,8 @@ public class OrderRequest {
 
     private double totalPrice;
 
-    @NotBlank(message="Payment Partner should Not be empty")
     private String paymentPartner;
-    @NotBlank(message="Payment method should Not be empty")
     private String paymentMethod;
 
-    @NotBlank(message="Payment Status should Not be empty")
     private String paymentStatus;
 }

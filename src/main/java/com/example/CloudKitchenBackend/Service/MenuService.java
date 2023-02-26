@@ -1,9 +1,6 @@
 package com.example.CloudKitchenBackend.Service;
 
-import com.example.CloudKitchenBackend.DTO.MenuDTO;
-import com.example.CloudKitchenBackend.DTO.MenuFoodDTO;
-import com.example.CloudKitchenBackend.DTO.MenuFoodListDTO;
-import com.example.CloudKitchenBackend.DTO.MenuListDTO;
+import com.example.CloudKitchenBackend.DTO.*;
 import com.example.CloudKitchenBackend.Model.Menu;
 import com.example.CloudKitchenBackend.Model.MenuFood;
 import com.example.CloudKitchenBackend.Request.MenuFoodRequest;
@@ -22,5 +19,6 @@ public interface MenuService {
 
     MenuDTO update(MenuRequest request, int id);
     MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String categoryName, String mealName, double rating, String sortBy, int page, int size);
+    RestaurantMenuDTO restaurantMenu(String foodName, String restaurantName, String categoryName, String mealName, double rating, String sortBy, int page, int size);
 
 }
