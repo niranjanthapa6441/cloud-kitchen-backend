@@ -15,6 +15,6 @@ public interface OrderService {
     CustomerOrderDTO cancel(String id);
 
     HashMap<String,Object> findAll(String phoneNumber, int page, int size);
-    HashMap<String,Object> findOrderByCustomer(String username, String period, String sortBy, String startDate, String endDate, int page, int size);
+    HashMap<String,Object> findOrderByCustomer(int id, String period, String sortBy, String startDate, String endDate, int page, int size);
 
 }

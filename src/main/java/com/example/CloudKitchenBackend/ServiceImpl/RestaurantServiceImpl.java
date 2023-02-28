@@ -116,7 +116,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     private String fullAddress(RestaurantAddress address) {
-        String fullAddress= address.getCountry()+","+address.getState()+","+address.getDistrict()+","+address.getStreetName()+","+address.getStreetNumber();
+        String fullAddress= address.getStreetNumber()+"-"+address.getStreetName()+","+address.getDistrict()+","+address.getState()+","+address.getCountry();
         return fullAddress;
     }
     private Restaurant toRestaurant(RestaurantRequest request) {

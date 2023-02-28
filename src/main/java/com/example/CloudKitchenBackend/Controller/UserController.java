@@ -30,8 +30,8 @@ public class UserController {
     public ResponseEntity<Object> save(@Valid @RequestBody UserSignUpRequest request){
         return RestResponse.ok(service.save(request),"User has been registered successfully");
     }
-    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> delete(@RequestParam int id){
+    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> delete(@PathVariable int id){
         return RestResponse.ok(service.delete(id),"User deleted Successful");
     }
     @PostMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
