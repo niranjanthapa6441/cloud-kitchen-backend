@@ -211,12 +211,17 @@ public class MenuServiceImpl implements MenuService {
                 .category(menuFood.getCategory().getCategory())
                 .Meal(menuFood.getMeal().getMeal())
                 .price(menuFood.getPrice())
+                .restaurantAddress(fullAddress(menuFood.getMenu().getRestaurant().getAddress()))
                 .rating(menuFood.getRating())
                 .discountPrice(menuFood.getPrice() * menuFood.getDiscountPercentage() / 100)
                 .imagePath(menuFood.getImagePath())
                 .build();
     }
-
+    private String fullAddress(RestaurantAddress address) {
+        String fullAddress= address.getStreetNumber()+"-"+address.getStreetName()+","+address.getDistrict()+","+address.getState()+","+address.getCountry();
+        return fullAddress;
+    }
     private void validate(MenuRequest request) {
+
     }
 }

@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap<String,Object> findOrderByCustomer(String username, String period, String sortBy, String startDate, String endDate, int page, int size) {
+    public HashMap<String,Object> findOrderByCustomer(int id, String period, String sortBy, String startDate, String endDate, int page, int size) {
         CriteriaBuilder cb= entityManager.getCriteriaBuilder();
         CriteriaQuery<CustomerOrder> query = cb.createQuery(CustomerOrder.class);
 
@@ -92,8 +92,8 @@ public class OrderServiceImpl implements OrderService {
         query.select(orderRoot);
         List<Predicate> predicates = new ArrayList<>();
 
-        if (username != null && !username.isEmpty()) {
-            predicates.add(cb.equal(cb.lower(customerJoin.get("username")), username.toLowerCase() ));
+        if (id!=0) {
+            predicates.add(cb.equal(customerJoin.get("id"),id));
         }
 
         if (period != null && !period.isEmpty()) {

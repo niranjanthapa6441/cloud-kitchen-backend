@@ -34,8 +34,8 @@ public class RestaurantController {
     ){
         return RestResponse.ok(service.save(request),"Restaurant Saved Successful");
     }
-    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> delete(@RequestParam String id){
+    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> delete(@PathVariable String id){
         return RestResponse.ok(service.delete(id),"Restaurant deleted Successful");
     }
     @PostMapping(value ="/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

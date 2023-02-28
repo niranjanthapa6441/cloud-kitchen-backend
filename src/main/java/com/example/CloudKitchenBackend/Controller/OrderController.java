@@ -32,8 +32,8 @@ public class OrderController {
     ){
         return RestResponse.ok(service.save(request),"Order Saved Successful");
     }
-    @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> delete(@RequestParam String id){
+    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> delete(@PathVariable String id){
         return RestResponse.ok(service.cancel(id),"Order cancelled Successful");
     }
     @PostMapping(value ="/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -42,7 +42,7 @@ public class OrderController {
     }
     @GetMapping(value = "/customer/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findByCustomerId(
-            @RequestParam String username,
+            @PathVariable int id,
             @RequestParam (required = false)String period,
             @RequestParam (required = false)String sortBy,
             @RequestParam (required = false)String startDate,
@@ -50,6 +50,6 @@ public class OrderController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size
     ){
-        return RestResponse.ok(service.findOrderByCustomer(username, period, sortBy, startDate, endDate, page, size),"Data Retrieval Successful");
+        return RestResponse.ok(service.findOrderByCustomer(id, period, sortBy, startDate, endDate, page, size),"Data Retrieval Successful");
     }
 }

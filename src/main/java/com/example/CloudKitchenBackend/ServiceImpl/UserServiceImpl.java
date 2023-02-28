@@ -59,12 +59,10 @@ public class UserServiceImpl implements UserService {
         else if(phoneNumber != null && role != null)
             pageUsers= repo.findUserByPhoneNumberAndRole(phoneNumber,role,paging);
         users = pageUsers.getContent();
-        System.out.println("I'm here");
         for (User user:users
         ) {
             usersList.add(toUserDTO(user));
         }
-        System.out.println("I'm here");
         UserListDTO userListDTO = toUserListDTO(usersList,pageUsers.getNumber(),pageUsers.getTotalElements(),pageUsers.getTotalPages());
         return userListDTO;
     }
@@ -100,7 +98,6 @@ public class UserServiceImpl implements UserService {
         return findRole;
     }
     private UserDTO toUserDTO(User user) {
-        System.out.println("userrole"+user.getRole().getName());
         return UserDTO.builder().
                 id(user.getId()).
                 role(user.getRole().getName()).
