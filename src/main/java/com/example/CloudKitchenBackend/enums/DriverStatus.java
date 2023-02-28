@@ -1,4 +1,8 @@
 package com.example.CloudKitchenBackend.enums;
 
-public class DriverStatus {
+public enum DriverStatus {
+    AVAILABLE,
+    EN_ROUTE,
+    FAR_FROM_LOCATION
+
 }

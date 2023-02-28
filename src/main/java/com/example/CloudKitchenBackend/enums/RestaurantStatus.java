@@ -1,4 +1,6 @@
 package com.example.CloudKitchenBackend.enums;
 
-public class RestaurantStatus {
+public enum RestaurantStatus {
+    ON_CONTRACT,
+    PAYMENT_NOT_DONE
 }
