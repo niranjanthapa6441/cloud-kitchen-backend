@@ -38,4 +38,5 @@ public class UserController {
     public ResponseEntity<Object> update(@PathVariable int id,@Valid @RequestBody UserUpdateRequest request){
         return RestResponse.ok(service.update(request, id),"User updated Successful");
     }
+    
 }

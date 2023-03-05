@@ -195,7 +195,7 @@ public class MenuServiceImpl implements MenuService {
 
     private MenuFoodListDTO toMenuFoodListDTO(List<MenuFoodDTO> menuFoods, int currentPage, int totalPages, long totalElements) {
         return MenuFoodListDTO.builder()
-                .menuFoods(menuFoods)
+                .foods(menuFoods)
                 .currentPage(currentPage)
                 .totalElements(totalElements)
                 .totalPages(totalPages)

@@ -13,11 +13,13 @@ public class OrderRequest {
     private String username;
 
     List<OrderFoodRequest> foods;
+
     private int totalItems;
 
     private double totalPrice;
 
     private String paymentPartner;
+
     private String paymentMethod;
 
     private String paymentStatus;

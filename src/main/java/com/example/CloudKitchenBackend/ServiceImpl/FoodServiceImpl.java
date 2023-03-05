@@ -90,7 +90,7 @@ public class FoodServiceImpl implements FoodService {
     }
     private FoodListDTO toFoodDTO(List<FoodDTO> foodDTOList, int number, long totalElements, int totalPages) {
         return FoodListDTO.builder().
-                foodList(foodDTOList).
+                foods(foodDTOList).
                 currentPage(number).
                 totalPages(totalPages).
                 totalElements(totalElements)

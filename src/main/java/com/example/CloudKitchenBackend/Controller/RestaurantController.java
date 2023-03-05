@@ -23,7 +23,7 @@ public class RestaurantController {
             @RequestParam(defaultValue = "0.0") double rating,
             @RequestParam(required = false) String latitude,
             @RequestParam(required = false) String longitude,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size
     ){
         return RestResponse.ok(service.findAll(restaurantName,rating,latitude,longitude,page,size),"Data Retrieval Successful");

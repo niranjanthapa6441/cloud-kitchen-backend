@@ -33,4 +33,7 @@ public class Restaurant {
     private RestaurantAddress address;
     private String status;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
 }

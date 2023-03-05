@@ -87,7 +87,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private RestaurantListDTO toRestaurantListDTO(List<Restaurant> restaurants, int number, long totalElements, int totalPages) {
         List<RestaurantDTO> restaurantDTOS = getRestaurantDTOS(restaurants);
         return RestaurantListDTO.builder()
-                .restaurantDTOS(restaurantDTOS)
+                .restaurants(restaurantDTOS)
                 .currentPage(number)
                 .totalPages(totalPages)
                 .totalElements(totalElements)
@@ -112,6 +112,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .status(restaurant.getStatus())
                 .address(fullAddress(restaurant.getAddress()))
                 .countryCode(restaurant.getCountryCode())
+                .imagePath(restaurant.getImagePath())
                 .build();
     }
 

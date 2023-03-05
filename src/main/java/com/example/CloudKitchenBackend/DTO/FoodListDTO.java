@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @Builder
 public class FoodListDTO {
-    private List<FoodDTO> foodList;
+    private List<FoodDTO> foods;
     private int currentPage;
 
     private long totalElements;

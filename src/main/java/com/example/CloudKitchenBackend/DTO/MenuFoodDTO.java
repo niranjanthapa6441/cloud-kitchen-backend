@@ -12,7 +12,6 @@ public class MenuFoodDTO {
 
     private double rating;
 
-    private String deliveryTime;
 
     private String restaurantName;
 

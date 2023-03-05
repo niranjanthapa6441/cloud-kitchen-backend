@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class MenuFoodListDTO {
-    List<MenuFoodDTO> menuFoods;
+    List<MenuFoodDTO> foods;
 
     private int currentPage;
 
