@@ -242,6 +242,9 @@ public class OrderServiceImpl implements OrderService {
     private Payment toOfflinePayment(OrderRequest request, CustomerOrder customerOrder) {
         Payment payment= new Payment();
         payment.setCustomerOrder(customerOrder);
+        payment.setPaymentDate(LocalDate.now());
+        payment.setPaymentTime(LocalTime.now());
+        payment.setPaymentPartner(request.getPaymentPartner());
         payment.setPaymentMethod(request.getPaymentMethod());
         payment.setStatus("UNPAID");
         return payment;

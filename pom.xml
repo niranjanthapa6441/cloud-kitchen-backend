@@ -149,6 +149,10 @@
 			</snapshots>
 		</repository>
 		<repository>
+			<id>jawg-maps-repo</id>
+			<url>https://repo.jawg.io/releases</url>
+		</repository>
+		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>
 			<url>https://repo.spring.io/snapshot</url>

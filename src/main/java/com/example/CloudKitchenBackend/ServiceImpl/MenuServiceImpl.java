@@ -68,7 +68,7 @@ public class MenuServiceImpl implements MenuService {
         return menu;
     }
 
-    public MenuFoodListDTO searchMenuFoods(String foodName, String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
+    public MenuFoodListDTO searchMenuFoods(String foodName,String restaurantId, String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MenuFood> query = cb.createQuery(MenuFood.class);
         Root<MenuFood> menuFoodRoot = query.from(MenuFood.class);
@@ -82,6 +82,9 @@ public class MenuServiceImpl implements MenuService {
         if (foodName != null && !foodName.isEmpty()) {
             predicates.add(cb.like(cb.lower(foodJoin.get("name")), "%" + foodName.toLowerCase() + "%"));
         }
+        if (restaurantId != null && !restaurantId.isEmpty()) {
+            predicates.add(cb.equal(restaurantJoin.get("id"),restaurantId));
+        }
         if (restaurantName != null && !restaurantName.isEmpty()) {
             predicates.add(cb.like(cb.lower(restaurantJoin.get("name")), "%" + restaurantName.toLowerCase() + "%"));
         }
@@ -94,6 +97,9 @@ public class MenuServiceImpl implements MenuService {
         if (rating != 0.0) {
             predicates.add(cb.greaterThanOrEqualTo(menuFoodRoot.get("rating"), rating));
         }
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(cb.asc(foodJoin.get("name")));
+        query.orderBy(orderList);
         if (sortBy != null && !sortBy.isEmpty()) {
             if (sortBy.equals("price")) {
                 query.orderBy(cb.asc(menuFoodRoot.get("price")));
@@ -101,10 +107,6 @@ public class MenuServiceImpl implements MenuService {
                 query.orderBy(cb.desc(menuFoodRoot.get("price")));
             }
         }
-
-        List<Order> orderList = new ArrayList<>();
-        orderList.add(cb.asc(foodJoin.get("name")));
-        query.orderBy(orderList);
         Predicate[] predicateArr = new Predicate[predicates.size()];
         Predicate predicate = cb.and(predicates.toArray(predicateArr));
         query = query.where(predicate);

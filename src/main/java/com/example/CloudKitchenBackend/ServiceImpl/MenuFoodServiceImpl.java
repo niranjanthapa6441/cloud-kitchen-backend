@@ -140,7 +140,7 @@ public class MenuFoodServiceImpl implements MenuFoodService {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return filePath.toString().replace(".","").trim();
+        return filePath.toString().replace("./","/").trim();
     }
 
     private Menu getMenu(MenuFoodRequest request) {
