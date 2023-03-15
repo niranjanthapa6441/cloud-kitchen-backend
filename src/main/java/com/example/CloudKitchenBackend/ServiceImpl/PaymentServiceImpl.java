@@ -24,7 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private EntityManager entityManager;
     @Override
-    public PaymentListDTO findAll(String username, String period, String startDate, String endDate, String paymentMethod, String paymentPartner, int page, int size) {
+    public PaymentListDTO findAll(String username,String status, String period, String startDate, String endDate, String paymentMethod, String paymentPartner, int page, int size) {
         CriteriaBuilder cb= entityManager.getCriteriaBuilder();
         CriteriaQuery<Payment> query = cb.createQuery(Payment.class);
         Root<Payment> paymentRoot = query.from(Payment.class);
@@ -36,6 +36,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         if (username != null && !username.isEmpty()) {
             predicates.add(cb.equal(cb.lower(customerJoin.get("username")), username.toLowerCase() ));
+        }
+        if (status!=null  && !status.isEmpty()) {
+            predicates.add(cb.equal(paymentRoot.get("status"),status));
         }
         if (period != null && !period.isEmpty()) {
             switch (period.toLowerCase()){
@@ -59,19 +62,23 @@ public class PaymentServiceImpl implements PaymentService {
                     break;
             }
         }
-
-        if ((startDate != null && !startDate.isEmpty())&&(endDate != null && !endDate.isEmpty())) {
-            predicates.add(cb.between(paymentRoot.get("paymentDate"), Formatter.convertStrToDate(startDate,"yyyy-MM-dd"),Formatter.convertStrToDate(endDate,"yyyy-MM-dd")));
-        }
         if (paymentMethod != null && !paymentMethod.isEmpty()) {
             predicates.add(cb.equal(cb.lower(paymentRoot.get("paymentMethod")), paymentMethod.toLowerCase()));
         }
         if (paymentPartner != null && !paymentPartner.isEmpty()) {
             predicates.add(cb.equal(cb.lower(paymentRoot.get("paymentPartner")), paymentPartner.toLowerCase() ));
         }
-        List<Order> paymentOrderList = new ArrayList<>();
-        paymentOrderList.add(cb.desc(paymentRoot.get("paymentDate")));
-        query.orderBy(paymentOrderList);
+        List<Order> OrderList = new ArrayList<>();
+        OrderList.add(cb.desc(paymentRoot.get("paymentDate")));
+        OrderList.add(cb.desc(paymentRoot.get("paymentTime")));
+
+        if ((startDate != null && !startDate.isEmpty())&&(endDate != null && !endDate.isEmpty())) {
+            predicates.add(cb.between(paymentRoot.get("paymentDate"), Formatter.convertStrToDate(startDate,"yyyy-MM-dd"),Formatter.convertStrToDate(endDate,"yyyy-MM-dd")));
+            OrderList.add(cb.asc(paymentRoot.get("paymentDate")));
+            OrderList.add(cb.asc(paymentRoot.get("paymentTime")));
+        }
+
+        query.orderBy(OrderList);
         query.where(cb.and(predicates.toArray(new Predicate[0])));
         List<Payment> payments = entityManager.createQuery(query).getResultList();
         TypedQuery<Payment> typedQuery = entityManager.createQuery(query);

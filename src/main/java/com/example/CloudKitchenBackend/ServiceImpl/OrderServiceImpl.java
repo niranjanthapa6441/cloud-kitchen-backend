@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap<String,Object> findOrderByCustomer(int id, String period, String sortBy, String startDate, String endDate, int page, int size) {
+    public HashMap<String,Object> findOrderByCustomer(int customerId,String status, String period,String sortBy, String startDate, String endDate, int page, int size) {
         CriteriaBuilder cb= entityManager.getCriteriaBuilder();
         CriteriaQuery<CustomerOrder> query = cb.createQuery(CustomerOrder.class);
 
@@ -92,10 +92,12 @@ public class OrderServiceImpl implements OrderService {
         query.select(orderRoot);
         List<Predicate> predicates = new ArrayList<>();
 
-        if (id!=0) {
-            predicates.add(cb.equal(customerJoin.get("id"),id));
+        if (customerId!=0) {
+            predicates.add(cb.equal(customerJoin.get("id"),customerId));
         }
-
+        if (status!=null  && !status.isEmpty()) {
+            predicates.add(cb.equal(orderRoot.get("status"),status));
+        }
         if (period != null && !period.isEmpty()) {
             switch (period.toLowerCase()){
                 case "daily":
@@ -118,13 +120,15 @@ public class OrderServiceImpl implements OrderService {
                     break;
             }
         }
+        List<Order> customerOrderList = new ArrayList<>();
+        customerOrderList.add(cb.desc(orderRoot.get("orderDate")));
+        customerOrderList.add(cb.desc(orderRoot.get("orderTime")));
 
         if ((startDate != null && !startDate.isEmpty())&&(endDate != null && !endDate.isEmpty())) {
             predicates.add(cb.between(orderRoot.get("orderDate"), Formatter.convertStrToDate(startDate,"yyyy-MM-dd"),Formatter.convertStrToDate(endDate,"yyyy-MM-dd")));
+            customerOrderList.add(cb.asc(orderRoot.get("orderDate")));
+            customerOrderList.add(cb.asc(orderRoot.get("orderTime")));
         }
-
-        List<Order> customerOrderList = new ArrayList<>();
-        customerOrderList.add(cb.desc(orderRoot.get("orderDate")));
         query.orderBy(customerOrderList);
         query.where(cb.and(predicates.toArray(new Predicate[0])));
         List<CustomerOrder> orderItems = entityManager.createQuery(query).getResultList();

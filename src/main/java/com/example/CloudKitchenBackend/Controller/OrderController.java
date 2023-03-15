@@ -15,41 +15,48 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+    public static final String ORDER_BY_ID_URI = "/{id}";
+    public static final String ORDER_BY_CUSTOMER_URI = "/customer/{id}";
+
+    public static final String SIZE = "5";
+    public static final String PAGE = "1";
+
+    public static final String MESSAGE = "Successful";
     @Autowired
     private OrderService service;
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findAll(
             @RequestParam(required = false) String phoneNumber,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = PAGE) int page,
+            @RequestParam(defaultValue = SIZE) int size
     ){
-        return RestResponse.ok(service.findAll(phoneNumber, page, size),"Data Retrieval Successful");
+        return RestResponse.ok(service.findAll(phoneNumber, page, size),MESSAGE);
     }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(
             @Valid @RequestBody OrderRequest request
     ){
-        return RestResponse.ok(service.save(request),"Order Saved Successful");
+        return RestResponse.ok(service.save(request),MESSAGE);
     }
-    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = ORDER_BY_ID_URI,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> delete(@PathVariable String id){
-        return RestResponse.ok(service.cancel(id),"Order cancelled Successful");
+        return RestResponse.ok(service.cancel(id),MESSAGE);
     }
-    @PostMapping(value ="/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value =ORDER_BY_ID_URI,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@PathVariable String id){
-        return RestResponse.ok(service.update(id),"Order updated Successful");
+        return RestResponse.ok(service.update(id),MESSAGE);
     }
-    @GetMapping(value = "/customer/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ORDER_BY_CUSTOMER_URI,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findByCustomerId(
             @PathVariable int id,
             @RequestParam (required = false)String period,
             @RequestParam (required = false)String sortBy,
+            @RequestParam (required = false)String status,
             @RequestParam (required = false)String startDate,
             @RequestParam (required = false)String endDate,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = PAGE) int page,
+            @RequestParam(defaultValue = SIZE) int size
     ){
-        return RestResponse.ok(service.findOrderByCustomer(id, period, sortBy, startDate, endDate, page, size),"Data Retrieval Successful");
+        return RestResponse.ok(service.findOrderByCustomer(id,status,period, sortBy, startDate, endDate, page, size),MESSAGE);
     }
 }

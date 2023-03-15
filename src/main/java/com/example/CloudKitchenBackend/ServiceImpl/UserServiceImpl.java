@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public UserListDTO users(String phoneNumber, String role, int page, int size) {
         List<User> users = new ArrayList<>();
         List<UserDTO> usersList = new ArrayList<>();
-        Pageable  paging= PageRequest.of(page, size);
+        Pageable  paging= PageRequest.of(page-1, size);
         Page<User> pageUsers = null;
         if (phoneNumber == null && role == null)
             pageUsers= repo.findAll(paging);
@@ -68,7 +69,13 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserDTO findById(int id) {
-        return null;
+        Optional<User> findUser= repo.findById(id);
+        User user;
+        if (findUser.isPresent())
+            user=findUser.get();
+        else
+            throw new NullPointerException("User not Found");
+        return toUserDTO(user);
     }
 
     @Override

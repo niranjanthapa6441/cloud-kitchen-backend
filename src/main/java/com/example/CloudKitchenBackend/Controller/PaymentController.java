@@ -20,6 +20,7 @@ public class PaymentController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> findAll(
             @RequestParam(required = false) String username,
+            @RequestParam(required = false) String status,
             @RequestParam(required = false) String period,
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
@@ -28,6 +29,6 @@ public class PaymentController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size
     ){
-        return RestResponse.ok(service.findAll(username, period, startDate, endDate, paymentMethod, paymentPartner, page, size),"Data Retrieval Successful");
+        return RestResponse.ok(service.findAll(username,status, period, startDate, endDate, paymentMethod, paymentPartner, page, size),"Data Retrieval Successful");
     }
 }

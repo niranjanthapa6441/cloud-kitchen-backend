@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO findAll(String category, int page, int size) {
         List<Category> categories = new ArrayList<>();
-        Pageable paging= PageRequest.of(page, size);
+        Pageable paging= PageRequest.of(page-1, size);
         Page<Category> pageCategories;
         if (category == null)
             pageCategories= repo.findAll(paging);
