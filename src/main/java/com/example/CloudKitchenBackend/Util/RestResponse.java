@@ -14,6 +14,7 @@ public class RestResponse {
     public Object data;
 
     public RestResponse() {
+
     }
 
     private RestResponse(String code, String message, Object data) {

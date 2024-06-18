@@ -7,7 +7,7 @@ spring:
     password: 6441
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -16,8 +16,8 @@ spring:
     open-in-view: false
   servlet:
     multipart:
-      max-file-size: 3MB
-      max-request-size: 3MB
+      max-file-size: 10MB
+      max-request-size: 10MB
 server:
   servlet:
     context-path: /cloudKitchen/api/v1

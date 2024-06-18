@@ -36,14 +36,13 @@ public class MenuController {
             @RequestParam(required = false) String restaurantName,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String meal,
-            @RequestParam String restaurantId,
             @RequestParam(defaultValue = RATING) double rating,
             @RequestParam(required = false) String sortBy,
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size
 
     ){
-        return RestResponse.ok(service.searchMenuFoods(foodName,restaurantId,restaurantName,category,meal, rating,sortBy,page,size),"Data Retrieval Successful");
+        return RestResponse.ok(service.searchMenuFoods(foodName,restaurantName,category,meal, rating,sortBy,page,size),"Data Retrieval Successful");
     }
     @GetMapping(value = RESTAURANT_URI,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> menuByRestaurant(

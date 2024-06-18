@@ -7,7 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @Entity
 @Table(name = "menu_food")
-public class MenuFood {
+public class  MenuFood {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(strategy = "uuid",name="system-uuid")

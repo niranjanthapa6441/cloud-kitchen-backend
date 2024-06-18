@@ -48,10 +48,23 @@ public class MenuServiceImpl implements MenuService {
         validate(request);
         Optional<Restaurant> findRestaurant = restaurantRepo.findById(request.getRestaurantId());
         Restaurant restaurant = new Restaurant();
+
         if (findRestaurant.isPresent())
             restaurant = findRestaurant.get();
+
         menuRepo.save(toMenu(request, restaurant));
+
         return "Saved Successfully";
+    }
+
+    @Override
+    public String delete(int id) {
+        return null;
+    }
+
+    @Override
+    public MenuDTO findById(int id) {
+        return null;
     }
 
     @Override
@@ -68,7 +81,7 @@ public class MenuServiceImpl implements MenuService {
         return menu;
     }
 
-    public MenuFoodListDTO searchMenuFoods(String foodName,String restaurantId, String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
+    public MenuFoodListDTO searchMenuFoods(String foodName,String restaurantName, String category, String mealName, double rating, String sortBy, int page, int size) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MenuFood> query = cb.createQuery(MenuFood.class);
         Root<MenuFood> menuFoodRoot = query.from(MenuFood.class);
@@ -81,9 +94,6 @@ public class MenuServiceImpl implements MenuService {
         List<Predicate> predicates = new ArrayList<>();
         if (foodName != null && !foodName.isEmpty()) {
             predicates.add(cb.like(cb.lower(foodJoin.get("name")), "%" + foodName.toLowerCase() + "%"));
-        }
-        if (restaurantId != null && !restaurantId.isEmpty()) {
-            predicates.add(cb.equal(restaurantJoin.get("id"),restaurantId));
         }
         if (restaurantName != null && !restaurantName.isEmpty()) {
             predicates.add(cb.like(cb.lower(restaurantJoin.get("name")), "%" + restaurantName.toLowerCase() + "%"));

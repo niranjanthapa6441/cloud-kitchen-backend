@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/category")
 public class CategoryController {
 
-    public static final String SIZE = "5";
-    public static final String PAGE = "1";
-    public static final String MESSAGE = "Successful";
+        public static final String SIZE = "5";
+        public static final String PAGE = "1";
+        public static final String MESSAGE = "Successful";
     public static final String CATEGORY_BY_ID_URI = "/{id}";
     @Autowired
     private CategoryService service;
@@ -32,7 +32,7 @@ public class CategoryController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(
             @Valid @RequestBody CategoryRequest request
-            ){
+            ) {
         return RestResponse.ok(service.save(request),MESSAGE);
     }
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)

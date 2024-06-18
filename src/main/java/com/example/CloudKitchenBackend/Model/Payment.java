@@ -16,7 +16,7 @@ public class Payment {
     @GenericGenerator(strategy = "uuid",name="system-uuid")
     private String id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "order_id")
     private CustomerOrder customerOrder;
 
